@@ -1,0 +1,6 @@
+package br.com.unifacisa.si2.damas;
+
+public enum colorType {
+	
+	BLACK,RED,WHITE,BLUE
+}
