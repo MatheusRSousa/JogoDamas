@@ -6,49 +6,49 @@ public class Tabuleiro {
 
 	private static final int TAMANHO = 8;
 	
-	Peca[][] aux = new Peca[TAMANHO][TAMANHO];
+	Peca[][] tabuleiro = new Peca[TAMANHO][TAMANHO];
 	
 	public Tabuleiro(Jogador jogador1, Jogador jogador2) {
-		for (int i = 0; i <	 aux.length; i++) {
-			for (int j = 0; j < aux.length; j++) {
+		for (int i = 0; i <	 tabuleiro.length; i++) {
+			for (int j = 0; j < tabuleiro.length; j++) {
 				
 				if(i != 3 && i!=4 && i<= 4) {
 					if(i%2 != 0) {
 						if(j % 2 == 0) {
-							aux[i][j] = jogador1.getPeca(); 
+							tabuleiro[i][j] = jogador1.getPeca(); 
 						}
 					}
 					else if(i%2 == 0){
 						if(j % 2 != 0) {
-							aux[i][j] = jogador1.getPeca();
+							tabuleiro[i][j] = jogador1.getPeca();
 						}
 					}
 					else {
-						aux[i][j] = null;
+						tabuleiro[i][j] = null;
 					}
 				}
 				
 				else if(i != 3 && i != 4 && i > 4){
 					if(i%2 != 0) {
 						if(j % 2 == 0) {
-							aux[i][j] = jogador2.getPeca(); 
+							tabuleiro[i][j] = jogador2.getPeca(); 
 						}
 					}
 					else if(i%2 == 0){
 						if(j % 2 != 0) {
-							aux[i][j] = jogador2.getPeca();
+							tabuleiro[i][j] = jogador2.getPeca();
 						}
 					}
 				}
 				else {
-					aux[i][j] =null;
+					tabuleiro[i][j] =null;
 				}
 			}
 		}
 	}
 	
-	public Peca[][] array(){
-		return aux;
+	public Peca[][] getTabuleiro(){
+		return tabuleiro;
 	}
 
 	public static int getTamanho() {
@@ -62,13 +62,13 @@ public class Tabuleiro {
 		
 		Tabuleiro tabuleiro = new Tabuleiro(jogador1, jogador2);
 		
-		for (int i = 0; i < tabuleiro.array().length; i++) {
-			for (int j = 0; j < tabuleiro.array().length; j++) {
-				if(tabuleiro.array()[i][j] == null) {
+		for (int i = 0; i < tabuleiro.getTabuleiro().length; i++) {
+			for (int j = 0; j < tabuleiro.getTabuleiro().length; j++) {
+				if(tabuleiro.getTabuleiro()[i][j] == null) {
 					System.out.print("  ");
 				} 
 				else {
-					System.out.print(tabuleiro.array()[i][j].getColor());
+					System.out.print(tabuleiro.getTabuleiro()[i][j].getColor());
 			}
 			}
 			System.out.println();
