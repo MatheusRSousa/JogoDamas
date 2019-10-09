@@ -16,4 +16,5 @@ public class Jogo {
 	private Jogador getDaVez() {
 		return (this.qntdJogadas % 2 == 0) ? jogador1 : jogador2;
 	}
+	
 }
