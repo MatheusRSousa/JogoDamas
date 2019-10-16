@@ -4,6 +4,8 @@ import br.com.unifacisa.si2.damas.Cor;
 
 public class Peca {
 
+	private int ladoTabuleiro;
+	
 	private boolean isDama;
 	
 	private Cor cor;
@@ -21,11 +23,20 @@ public class Peca {
 		this.isDama = isDama;
 	}
 
-	public Cor getColor() {
+
+	public int getLadoTabuleiro() {
+		return ladoTabuleiro;
+	}
+
+	public void setLadoTabuleiro(int ladoTabuleiro) {
+		this.ladoTabuleiro = ladoTabuleiro;
+	}
+
+	public Cor getCor() {
 		return cor;
 	}
 
-	public void setColor(Cor cor) {
+	public void setCor(Cor cor) {
 		this.cor = cor;
 	}
 	

@@ -1,18 +1,26 @@
 package br.com.unifacisa.si2.damas.entity;
 
-import br.com.unifacisa.si2.damas.Cor;
-
 public class Tabuleiro {
+	
+	private static final int LADO_NORTE = 0;
+	
+	private static final int LADO_SUL = 1;
 
-	private static final int TAMANHO = 8;
+	private int tamanho = -1;
 	
-	Peca[][] tabuleiro = new Peca[TAMANHO][TAMANHO];
+	Peca[][] tabuleiro;
 	
-	public Tabuleiro(Jogador jogador1, Jogador jogador2) {
+	//usar o singleton (tabuleiro unico)
+	public Tabuleiro(Jogador jogador1, Jogador jogador2, int tamanho) {
+		jogador1.getPeca().setLadoTabuleiro(LADO_NORTE);
+		jogador2.getPeca().setLadoTabuleiro(LADO_SUL);
+		setTamanho(tamanho);
+		tabuleiro = new Peca[tamanho][tamanho];
+		
 		for (int i = 0; i <	 tabuleiro.length; i++) {
 			for (int j = 0; j < tabuleiro.length; j++) {
 				
-				if(i != 3 && i!=4 && i<= 4) {
+				if(i < (tamanho/2) -1) {
 					if(i%2 != 0) {
 						if(j % 2 == 0) {
 							tabuleiro[i][j] = jogador1.getPeca(); 
@@ -28,7 +36,7 @@ public class Tabuleiro {
 					}
 				}
 				
-				else if(i != 3 && i != 4 && i > 4){
+				else if(i > tamanho/2){
 					if(i%2 != 0) {
 						if(j % 2 == 0) {
 							tabuleiro[i][j] = jogador2.getPeca(); 
@@ -51,29 +59,12 @@ public class Tabuleiro {
 		return tabuleiro;
 	}
 
-	public static int getTamanho() {
-		return TAMANHO;
+	public int getTamanho() {
+		return tamanho;
 	}
 
-	public static void main(String[] args) {
-		Jogador jogador1 = new Jogador("Matheus", new Peca(false, Cor.BLACK));
-		
-		Jogador jogador2 = new Jogador("James", new Peca(false, Cor.WHITE));
-		
-		Tabuleiro tabuleiro = new Tabuleiro(jogador1, jogador2);
-		
-		for (int i = 0; i < tabuleiro.getTabuleiro().length; i++) {
-			for (int j = 0; j < tabuleiro.getTabuleiro().length; j++) {
-				if(tabuleiro.getTabuleiro()[i][j] == null) {
-					System.out.print("  ");
-				} 
-				else {
-					System.out.print(tabuleiro.getTabuleiro()[i][j].getColor());
-			}
-			}
-			System.out.println();
-		}
-		
-	}
 
+	public void setTamanho(int tamanho) {
+		this.tamanho = tamanho;
+	}
 }
