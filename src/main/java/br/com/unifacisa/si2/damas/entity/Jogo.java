@@ -1,5 +1,7 @@
 package br.com.unifacisa.si2.damas.entity;
 
+import java.util.List;
+
 public class Jogo {
 
 	private Jogador jogador1;
@@ -15,37 +17,34 @@ public class Jogo {
 		this.tabuleiro = tabuleiro;
 	}
 
-	public void moverPeca(Peca peca, int x_sai, int y_sai) {
+	public void moverPeca(Peca peca, int linhaSaida, int colunaSaida) {
 
-		if (this.isJogadaValida(x_sai, y_sai)) {
+		if (this.isJogadaValida(linhaSaida, colunaSaida)) {
 			System.out.println("Jogada valida");
 			tabuleiro.getTabuleiro()[jogadaYanterior][jogadaXanterior] = null;
-			tabuleiro.getTabuleiro()[y_sai][x_sai] = peca;
+			tabuleiro.getTabuleiro()[colunaSaida][linhaSaida] = peca;
 			qntdJogadas++;
-		}
-
-		else {
+		} else {
 			System.out.println("jogada invalida");
 		}
 	}
 
 	// Escolher peça
-	public Peca escolherPeca(int x, int y) {
+	public Peca escolherPeca(int linha, int coluna) {
 		Peca[][] tabu = tabuleiro.getTabuleiro();
 		Jogador jogadorVez = getDaVez();
-		if (x < tabuleiro.getTamanho() && y < tabuleiro.getTamanho()) {
-			Peca peca = tabu[y][x];
+		if (linha < tabuleiro.getTamanho() && coluna < tabuleiro.getTamanho()) {
+			Peca peca = tabu[coluna][linha];
 			if (peca != null) {
 				if (peca.getCor() == jogadorVez.getPeca().getCor()) {
-					if (getJogadaPossivel(x, y)) {
-						setJogadaXanterior(x);
-						setJogadaYanterior(y);
+					if (getJogadaPossivel(linha, coluna).size() > 0) {
+						setJogadaXanterior(linha);
+						setJogadaYanterior(coluna);
 						return peca;
 					}
 				}
 			}
 		}
-
 		System.out.println();
 		System.out.println("Peça inválida, escolha outra peça");
 		System.out.println();
@@ -58,59 +57,30 @@ public class Jogo {
 	}
 
 	// Retorna se existe jogada possivel
-	public boolean getJogadaPossivel(int x, int y) {
+	private List<JogadasPossiveis> getJogadaPossivel(int linha, int coluna) {
+		JogadasPossiveis jogadasPossiveis = new JogadasPossiveis(tabuleiro);
+
 		Peca[][] tabu = tabuleiro.getTabuleiro();
 
 		Jogador jogadorVez = getDaVez();
 
-		if (x >= 0 && x < tabuleiro.getTamanho() && y >= 0 && y < tabuleiro.getTamanho()) {
-			if (jogadorVez.getPeca().getLadoTabuleiro() == 0) {
-				if (((y > 0 && tabu[y - 1][x + 1] == null)
-						|| (x < tabuleiro.getTamanho() && x < tabuleiro.getTamanho() && tabu[y + 1][x + 1] == null)
-						|| (y > 1 && tabu[y - 2][x + 2] == null))) {
-					return true;
-				}
-			} else {
-				if ((x > 0 && y > 0 && tabu[y - 1][x - 1] == null)
-						|| (y > 0 && x < tabuleiro.getTamanho() && tabu[y - 1][x + 1] == null)) {
-					return true;
-				}
-			}
-		} else if (x >= 0 && x + 1 < tabuleiro.getTamanho() && y >= 0 && y + 1 < tabuleiro.getTamanho()) {
-			if (jogadorVez.getPeca().getLadoTabuleiro() == 0) {
-				if ((tabu[y + 2][x + 2] == null && tabu[y + 1][x + 1].getCor() != jogadorVez.getPeca().getCor())
-						&& (y + 2 < tabu[y].length) || (x - 2) <= 0) {
-					return true;
-				} else if ((tabu[y + 2][x - 2] == null && tabu[y + 1][x - 1].getCor() != jogadorVez.getPeca().getCor())
-						&& (y - 2 <= 0) || (x + 2) < tabu.length) {
-					return true;
-
-				} 
-				}else if(jogadorVez.getPeca().getLadoTabuleiro() == 1) {
-					if((tabu[y - 2][x - 2] == null && tabu[y - 1][x - 1].getCor() != jogadorVez.getPeca().getCor())
-							&& (y - 2 >= 0) || (x - 2) >= 0) {
-						return true;
-					} else if((tabu[y-2][x+2]== null && tabu[y-1][x+1].getCor() == jogadorVez.getPeca().getCor())) {
-						return true;
-					}
-			}
+		if (jogadorVez.getPeca().getLadoTabuleiro() == 0) {
+			return jogadasPossiveis.getJogadaPossivelJ1(linha, coluna, jogadorVez, tabu);
+		} else {
+			return jogadasPossiveis.getJogadaPossivelJ2(linha, coluna, jogadorVez, tabu);
 		}
-		return false;
 	}
-	//y coluna x linha
 
 	// Verifica se a jogada é válida
-	private boolean isJogadaValida(int x, int y) {
+	private boolean isJogadaValida(int linha, int coluna) {
 		Peca[][] tabu = tabuleiro.getTabuleiro();
 
-		if (y % 2 == 0 && x % 2 != 0) {
-			if (tabu[y][x] == null) {
+		if (coluna % 2 == 0 && linha % 2 != 0) {
+			if (tabu[coluna][linha] == null) {
 				return true;
 			}
-		} else if (y % 2 != 0 && x % 2 == 0) {
-
-			if (tabu[y][x] == null) {
-
+		} else if (coluna % 2 != 0 && linha % 2 == 0) {
+			if (tabu[coluna][linha] == null) {
 				return true;
 			}
 		}
@@ -120,19 +90,18 @@ public class Jogo {
 	// imprimir tabuleiro
 	public void imprimirTabuleiro() {
 		System.out.print("    ");
-		for (int i = 0; i < tabuleiro.getTabuleiro().length; i++) {
-			System.out.print(i + "    ");
-
+		for (int coluna = 0; coluna < tabuleiro.getTabuleiro().length; coluna++) {
+			System.out.print(coluna + "    ");
 		}
 		System.out.println();
-		for (int i = 0; i < tabuleiro.getTabuleiro().length; i++) {
-			System.out.print(i + " ");
-			for (int j = 0; j < tabuleiro.getTabuleiro().length; j++) {
+		for (int coluna = 0; coluna < tabuleiro.getTabuleiro().length; coluna++) {
+			System.out.print(coluna + " ");
+			for (int linha = 0; linha < tabuleiro.getTabuleiro().length; linha++) {
 
-				if (tabuleiro.getTabuleiro()[i][j] == null) {
+				if (tabuleiro.getTabuleiro()[coluna][linha] == null) {
 					System.out.print("     ");
 				} else {
-					System.out.print(tabuleiro.getTabuleiro()[i][j].getCor());
+					System.out.print(tabuleiro.getTabuleiro()[coluna][linha].getCor());
 				}
 			}
 			System.out.println();
@@ -145,9 +114,9 @@ public class Jogo {
 
 		int qtdPeca = 0;
 
-		for (int i = 0; i < tabu.length; i++) {
-			for (int j = 0; j < tabu.length; j++) {
-				if (tabu[i][j].getCor() == jogador.getPeca().getCor()) {
+		for (int coluna = 0; coluna < tabu.length; coluna++) {
+			for (int linha = 0; linha < tabu.length; linha++) {
+				if (tabu[coluna][linha].getCor() == jogador.getPeca().getCor()) {
 					qtdPeca += 1;
 				}
 			}
