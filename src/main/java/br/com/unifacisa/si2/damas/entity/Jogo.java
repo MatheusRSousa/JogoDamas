@@ -63,8 +63,10 @@ public class Jogo {
 		Peca[][] tabu = tabuleiro.getTabuleiro();
 
 		Jogador jogadorVez = getDaVez();
-
-		if (jogadorVez.getPeca().getLadoTabuleiro() == 0) {
+		if(tabu[linha][coluna].isDama()) {
+			return jogadasPossiveis.getJogadaPossivelDama(linha, coluna, jogadorVez, tabu);
+		}
+		else if (jogadorVez.getPeca().getLadoTabuleiro() == 0) {
 			return jogadasPossiveis.getJogadaPossivelJ1(linha, coluna, jogadorVez, tabu);
 		} else {
 			return jogadasPossiveis.getJogadaPossivelJ2(linha, coluna, jogadorVez, tabu);
