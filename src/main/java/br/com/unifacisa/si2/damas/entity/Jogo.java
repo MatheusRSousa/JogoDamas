@@ -6,8 +6,8 @@ public class Jogo {
 
 	private Jogador jogador1;
 	private Jogador jogador2;
-	private int jogadaXanterior;
-	private int jogadaYanterior;
+	private int linhaAnterior;
+	private int colunaAnterior;
 	private Tabuleiro tabuleiro;
 	private int qntdJogadas = 0;
 
@@ -18,17 +18,24 @@ public class Jogo {
 	}
 
 	public void moverPeca(Peca peca, int linhaSaida, int colunaSaida) {
-		List<JogadasPossiveis> jogadasPossiveis = getJogadaPossivel(jogadaXanterior, jogadaYanterior);
+		List<List<JogadasPossiveis>> jogadasPossiveis = getJogadaPossivel(linhaAnterior, colunaAnterior);
 		boolean jogadaPossivel = false;
-		for (JogadasPossiveis jogadasPossiveis2 : jogadasPossiveis) {
-			if(jogadasPossiveis2.getColuna() == colunaSaida && jogadasPossiveis2.getLinha() == linhaSaida) {
+		for (List<JogadasPossiveis> jogadasPossiveis2 : jogadasPossiveis) {
+			if(jogadasPossiveis2.get(0).getColuna() == colunaSaida && jogadasPossiveis2.get(0).getLinha()  == linhaSaida) {
 				jogadaPossivel = true;
 			}
 		}
 		if (jogadaPossivel) {
 			System.out.println("Jogada valida");
-			tabuleiro.getTabuleiro()[jogadaYanterior][jogadaXanterior] = null;
+			tabuleiro.getTabuleiro()[colunaAnterior][linhaAnterior] = null;
 			tabuleiro.getTabuleiro()[colunaSaida][linhaSaida] = peca;
+			if((colunaSaida >= colunaAnterior-2 || colunaSaida <= colunaAnterior+2)) {
+				
+			}
+			if((colunaSaida == 0 && getDaVez().getPeca().getLadoTabuleiro() == 0)||
+					(colunaSaida == tabuleiro.getTamanho()-1 && getDaVez().getPeca().getLadoTabuleiro() == 1))  {
+				tabuleiro.getTabuleiro()[colunaSaida][linhaSaida].setDama(true);
+			}
 			qntdJogadas++;
 		} else {
 			System.out.println("jogada invalida");
@@ -63,16 +70,15 @@ public class Jogo {
 	}
 
 	// Retorna se existe jogada possivel
-	public List<JogadasPossiveis> getJogadaPossivel(int linha, int coluna) {
+	public List<List<JogadasPossiveis>> getJogadaPossivel(int linha, int coluna) {
 		JogadasPossiveis jogadasPossiveis = new JogadasPossiveis(tabuleiro);
 
 		Peca[][] tabu = tabuleiro.getTabuleiro();
 
 		Jogador jogadorVez = getDaVez();
-		if(tabu[linha][coluna].isDama()) {
+		if (tabu[linha][coluna].isDama()) {
 			return jogadasPossiveis.jogadasDama(linha, coluna, jogadorVez, tabu);
-		}
-		else if (jogadorVez.getPeca().getLadoTabuleiro() == 0) {
+		} else if (jogadorVez.getPeca().getLadoTabuleiro() == 0) {
 			return jogadasPossiveis.getJogadaPossivelJ1(linha, coluna, jogadorVez, tabu);
 		} else {
 			return jogadasPossiveis.getJogadaPossivelJ2(linha, coluna, jogadorVez, tabu);
@@ -97,8 +103,8 @@ public class Jogo {
 
 	// imprimir tabuleiro
 	public void imprimirTabuleiro() {
-		
-		System.out.println("Lado do jogador: "+ jogador1.getNome());
+
+		System.out.println("Lado do jogador: " + jogador1.getNome());
 		System.out.print("    ");
 		for (int coluna = 0; coluna < tabuleiro.getTabuleiro().length; coluna++) {
 			System.out.print(coluna + "    ");
@@ -116,7 +122,7 @@ public class Jogo {
 			}
 			System.out.println();
 		}
-		System.out.println("Lado do jogador: "+ jogador2.getNome());
+		System.out.println("Lado do jogador: " + jogador2.getNome());
 	}
 
 	// Retorna a quantidade de perça que o jogador ainda tem no tabuleiro
@@ -136,11 +142,11 @@ public class Jogo {
 	}
 
 	public void setJogadaXanterior(int jogadaXanterior) {
-		this.jogadaXanterior = jogadaXanterior;
+		this.linhaAnterior = jogadaXanterior;
 	}
 
 	public void setJogadaYanterior(int jogadaYanterior) {
-		this.jogadaYanterior = jogadaYanterior;
+		this.colunaAnterior = jogadaYanterior;
 	}
 
 //	//Verifica se o jogo acabou
