@@ -18,8 +18,14 @@ public class Jogo {
 	}
 
 	public void moverPeca(Peca peca, int linhaSaida, int colunaSaida) {
-
-		if (this.isJogadaValida(linhaSaida, colunaSaida)) {
+		List<JogadasPossiveis> jogadasPossiveis = getJogadaPossivel(jogadaXanterior, jogadaYanterior);
+		boolean jogadaPossivel = false;
+		for (JogadasPossiveis jogadasPossiveis2 : jogadasPossiveis) {
+			if(jogadasPossiveis2.getColuna() == colunaSaida && jogadasPossiveis2.getLinha() == linhaSaida) {
+				jogadaPossivel = true;
+			}
+		}
+		if (jogadaPossivel) {
 			System.out.println("Jogada valida");
 			tabuleiro.getTabuleiro()[jogadaYanterior][jogadaXanterior] = null;
 			tabuleiro.getTabuleiro()[colunaSaida][linhaSaida] = peca;
@@ -52,19 +58,19 @@ public class Jogo {
 	}
 
 	// Retorna o jogador da vez
-	private Jogador getDaVez() {
+	public Jogador getDaVez() {
 		return (this.qntdJogadas % 2 == 0) ? jogador1 : jogador2;
 	}
 
 	// Retorna se existe jogada possivel
-	private List<JogadasPossiveis> getJogadaPossivel(int linha, int coluna) {
+	public List<JogadasPossiveis> getJogadaPossivel(int linha, int coluna) {
 		JogadasPossiveis jogadasPossiveis = new JogadasPossiveis(tabuleiro);
 
 		Peca[][] tabu = tabuleiro.getTabuleiro();
 
 		Jogador jogadorVez = getDaVez();
 		if(tabu[linha][coluna].isDama()) {
-			return jogadasPossiveis.getJogadaPossivelDama(linha, coluna, jogadorVez, tabu);
+			return jogadasPossiveis.jogadasDama(linha, coluna, jogadorVez, tabu);
 		}
 		else if (jogadorVez.getPeca().getLadoTabuleiro() == 0) {
 			return jogadasPossiveis.getJogadaPossivelJ1(linha, coluna, jogadorVez, tabu);
@@ -73,24 +79,26 @@ public class Jogo {
 		}
 	}
 
-	// Verifica se a jogada é válida
-	private boolean isJogadaValida(int linha, int coluna) {
-		Peca[][] tabu = tabuleiro.getTabuleiro();
-
-		if (coluna % 2 == 0 && linha % 2 != 0) {
-			if (tabu[coluna][linha] == null) {
-				return true;
-			}
-		} else if (coluna % 2 != 0 && linha % 2 == 0) {
-			if (tabu[coluna][linha] == null) {
-				return true;
-			}
-		}
-		return false;
-	}
+//	// Verifica se a jogada é válida
+//	private boolean isJogadaValida(int linha, int coluna) {
+//		Peca[][] tabu = tabuleiro.getTabuleiro();
+//
+//		if (coluna % 2 == 0 && linha % 2 != 0) {
+//			if (tabu[coluna][linha] == null) {
+//				return true;
+//			}
+//		} else if (coluna % 2 != 0 && linha % 2 == 0) {
+//			if (tabu[coluna][linha] == null) {
+//				return true;
+//			}
+//		}
+//		return false;
+//	}
 
 	// imprimir tabuleiro
 	public void imprimirTabuleiro() {
+		
+		System.out.println("Lado do jogador: "+ jogador1.getNome());
 		System.out.print("    ");
 		for (int coluna = 0; coluna < tabuleiro.getTabuleiro().length; coluna++) {
 			System.out.print(coluna + "    ");
@@ -108,6 +116,7 @@ public class Jogo {
 			}
 			System.out.println();
 		}
+		System.out.println("Lado do jogador: "+ jogador2.getNome());
 	}
 
 	// Retorna a quantidade de perça que o jogador ainda tem no tabuleiro

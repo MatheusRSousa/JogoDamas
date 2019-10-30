@@ -5,36 +5,36 @@ import java.util.List;
 
 public class JogadasPossiveis {
 
-	private int x;
-	private int y;
+	private int linha;
+	private int coluna;
 	private Tabuleiro tabuleiro;
 
 	public JogadasPossiveis(Tabuleiro tabuleiro) {
 		this.tabuleiro = tabuleiro;
 	}
 
-	public JogadasPossiveis(int x, int y) {
-		this.x = x;
-		this.y = y;
+	public JogadasPossiveis(int linha, int coluna) {
+		this.linha = linha;
+		this.coluna = coluna;
 	}
 
-	public int getX() {
-		return x;
+	public int getLinha() {
+		return linha;
 	}
 
-	public void setX(int x) {
-		this.x = x;
+	public void setLinha(int x) {
+		this.linha = x;
 	}
 
-	public int getY() {
-		return y;
+	public int getColuna() {
+		return coluna;
 	}
 
-	public void setY(int y) {
-		this.y = y;
+	public void setColuna(int y) {
+		this.coluna = y;
 	}
 
-	public List<JogadasPossiveis> jogadasDama(int linha, int coluna, Peca[][] tabu, Jogador jogador) {
+	public List<JogadasPossiveis> jogadasDama(int linha, int coluna,  Jogador jogador, Peca[][] tabu) {
 		ArrayList<JogadasPossiveis> jogadasPossiveis = new ArrayList<JogadasPossiveis>();
 		int direita = linha;
 		int esquerda = linha;
@@ -90,131 +90,61 @@ public class JogadasPossiveis {
 	// verifica se a jogada do jogador 1 é possivel
 	public List<JogadasPossiveis> getJogadaPossivelJ2(int linha, int coluna, Jogador jogadorVez, Peca[][] tabu) {
 		List<JogadasPossiveis> jogadasPossiveis = new ArrayList<JogadasPossiveis>();
-		if ((linha > 0 && coluna > 0 && tabu[coluna - 1][linha - 1] == null)
-				|| (coluna > 0 && linha < tabuleiro.getTamanho() && tabu[coluna - 1][linha + 1] == null)) {
-			jogadasPossiveis.add(new JogadasPossiveis(linha, coluna));
-			if ((tabu[coluna - 2][linha - 2] == null
-					&& tabu[coluna - 1][linha - 1].getCor() != jogadorVez.getPeca().getCor()) && (coluna - 2 >= 0)
-					|| (linha - 2) >= 0) {
-				jogadasPossiveis.add(new JogadasPossiveis(linha, coluna));
-			} else if ((tabu[coluna - 2][linha + 2] == null
-					&& tabu[coluna - 1][linha + 1].getCor() == jogadorVez.getPeca().getCor())) {
-				jogadasPossiveis.add(new JogadasPossiveis(linha, coluna));
+		if (linha >= 0 && linha < tabuleiro.getTamanho() && coluna >= 0 && coluna < tabuleiro.getTamanho()) {
+			if (linha + 1 < tabu.length && coluna -1 >= 0) {
+				if(tabu[coluna -1][linha+1] == null) {
+					jogadasPossiveis.add(new JogadasPossiveis(linha+1, coluna-1));
+				}
+			if(linha - 1 >= 0 && coluna - 1 >=0) {
+				if(tabu[linha -1][coluna-1] == null) {
+					jogadasPossiveis.add(new JogadasPossiveis(linha-1, coluna-1));
+				}
 			}
+			}
+			 if (linha -1 > 1 && coluna -1> 1 ) {
+					if(tabu[coluna - 1][linha - 1] != null) {
+						if(tabu[linha -1][coluna-1].getCor() != jogadorVez.getPeca().getCor() && tabu[linha -2][coluna-2] == null) {
+							jogadasPossiveis.add(new JogadasPossiveis(linha-2, coluna-2));
+						}
+					}
+				}
+			if(linha + 1  < tabu.length && coluna - 1 > 1) {
+				if(tabu[linha][coluna].getCor() != tabu[linha +1][coluna-1].getCor() && tabu[linha +2][coluna-2] == null) {
+					jogadasPossiveis.add(new JogadasPossiveis(linha+2, coluna-2));			
+				}
+			}
+				
 		}
+		
 		return jogadasPossiveis;
 	}
 
 	// verifica se a jogada da peça que o jogador 1 escolheu é possivel
 	public List<JogadasPossiveis> getJogadaPossivelJ1(int linha, int coluna, Jogador jogadorVez, Peca[][] tabu) {
+		
 		List<JogadasPossiveis> jogadasPossiveis = new ArrayList<JogadasPossiveis>();
 		if (linha >= 0 && linha < tabuleiro.getTamanho() && coluna >= 0 && coluna < tabuleiro.getTamanho()) {
-			if (((coluna > 0 && tabu[coluna - 1][linha + 1] == null)
-					|| (linha < tabuleiro.getTamanho() && linha < tabuleiro.getTamanho()
-							&& tabu[coluna + 1][linha + 1] == null)
-					|| (coluna > 1 && tabu[coluna - 2][linha + 2] == null))) {
-				jogadasPossiveis.add(new JogadasPossiveis(linha, coluna));
+			if (coluna > 0 && tabu[coluna + 1][linha - 1] == null){
+				jogadasPossiveis.add(new JogadasPossiveis(linha-1,coluna+1));
 			}
-		} else if (linha >= 0 && linha + 1 < tabuleiro.getTamanho() && coluna >= 0
-				&& coluna + 1 < tabuleiro.getTamanho()) {
+			if (linha < tabuleiro.getTamanho() && linha < tabuleiro.getTamanho() && tabu[coluna + 1][linha + 1] == null){
+					jogadasPossiveis.add(new JogadasPossiveis(linha+1,coluna+1));
+			}
+		} if (linha >= 0 && linha + 1 < tabuleiro.getTamanho() && coluna >= 0 && coluna + 1 < tabuleiro.getTamanho()
+				&& (tabu[coluna + 1][linha + 1] != null || tabu[coluna + 1][linha - 1] != null)) {
 			if ((tabu[coluna + 2][linha + 2] == null
 					&& tabu[coluna + 1][linha + 1].getCor() != jogadorVez.getPeca().getCor())
-					&& (coluna + 2 < tabu[coluna].length) || (linha - 2) <= 0) {
-				jogadasPossiveis.add(new JogadasPossiveis(linha, coluna));
-			} else if ((tabu[coluna + 2][linha - 2] == null
-					&& tabu[coluna + 1][linha - 1].getCor() != jogadorVez.getPeca().getCor()) && (coluna - 2 <= 0)
+					&& (coluna + 2 < tabu[coluna].length) || (linha - 2) >= 0) {
+				jogadasPossiveis.add(new JogadasPossiveis(linha+1, coluna+1));
+			} if ((tabu[coluna + 2][linha - 2] == null
+					&& tabu[coluna + 1][linha - 1].getCor() != jogadorVez.getPeca().getCor()) && (coluna - 2 >= 0)
 					|| (linha + 2) < tabu.length) {
-				jogadasPossiveis.add(new JogadasPossiveis(linha, coluna));
+				jogadasPossiveis.add(new JogadasPossiveis(linha-2, coluna+2));
 			}
 		}
 		return jogadasPossiveis;
 	}
 
-	public List<JogadasPossiveis> getJogadaPossivelDama(int linha, int coluna, Jogador jogadorVez, Peca[][] tabu) {
-
-		List<JogadasPossiveis> jogadasPossiveis = new ArrayList<JogadasPossiveis>();
-		
-		int esquerda = linha;
-		int direita = linha;
-		boolean podeIrDireita = true;
-		boolean podeIrEsquerda = true;
-		for (int i = coluna + 1; i < tabu.length; i++) {
-			esquerda--;
-			direita++;
-			if (podeIrDireita) {
-
-				if (tabu[direita][i] == null) {
-					jogadasPossiveis.add(new JogadasPossiveis(direita, i));
-				}
-				
-//				else if(tabu[direita][i].getCor() != jogadorVez.getPeca().getCor() && tabu[direita+1][i+1]== null) {
-//					//talvez volte jogada repitida
-//					direita++;
-//					jogadasPossiveis.add(new JogadasPossiveis(direita, i+1));		
-//				}
-				else if(tabu[direita][i].getCor() == jogadorVez.getPeca().getCor()) {
-					podeIrDireita = false;
-				}
-
-			}
-			if (podeIrEsquerda) {
-				if (tabu[esquerda][i] == null) {
-					jogadasPossiveis.add(new JogadasPossiveis(direita, i));
-				}
-//				else if(tabu[direita][i].getCor() != jogadorVez.getPeca().getCor() && tabu[esquerda-1][i+1]== null) {
-//					//talvez volte jogada repitida					
-//					jogadasPossiveis.add(new JogadasPossiveis(esquerda, i+1));		
-//				}
-				else if(tabu[esquerda][i].getCor() == jogadorVez.getPeca().getCor()) {
-					podeIrEsquerda = false;
-				}
-			} else {
-				break;
-			}
-
-		}
-		
-		esquerda = linha;
-		direita = linha;
-		podeIrDireita = true;
-		podeIrEsquerda = true;
-		for (int i = coluna - 1; i < 0; i--) {
-			esquerda--;
-			direita++;
-			if (podeIrDireita) {
-
-				if (tabu[direita][i] == null) {
-					jogadasPossiveis.add(new JogadasPossiveis(direita, i));
-				}
-				
-//				else if(tabu[direita][i].getCor() != jogadorVez.getPeca().getCor() && tabu[direita+1][i+1]== null) {
-//					//talvez volte jogada repitida
-//					direita++;
-//					jogadasPossiveis.add(new JogadasPossiveis(direita, i+1));		
-//				}
-				else if(tabu[direita][i].getCor() == jogadorVez.getPeca().getCor()) {
-					podeIrDireita = false;
-				}
-
-			}
-			if (podeIrEsquerda) {
-				if (tabu[esquerda][i] == null) {
-					jogadasPossiveis.add(new JogadasPossiveis(direita, i));
-				}
-//				else if(tabu[direita][i].getCor() != jogadorVez.getPeca().getCor() && tabu[esquerda-1][i+1]== null) {
-//					//talvez volte jogada repitida					
-//					jogadasPossiveis.add(new JogadasPossiveis(esquerda, i+1));		
-//				}
-				else if(tabu[esquerda][i].getCor() == jogadorVez.getPeca().getCor()) {
-					podeIrEsquerda = false;
-				}
-			} else {
-				break;
-			}
-		}
-
-
-		return jogadasPossiveis;
-	}
+	
 
 }

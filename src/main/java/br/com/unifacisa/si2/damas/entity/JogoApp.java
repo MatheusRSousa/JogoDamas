@@ -1,5 +1,6 @@
 package br.com.unifacisa.si2.damas.entity;
 
+import java.util.List;
 import java.util.Scanner;
 
 import br.com.unifacisa.si2.damas.Cor;
@@ -22,26 +23,45 @@ public class JogoApp {
 		jogo.imprimirTabuleiro();
 		
 		System.out.println();
-		
+		int linha = 0;
+		int coluna= 0;
 		int cont = 0;
+		int coluna_saida = 0;
+		int linha_saida = 0;
 		while(cont < 2) {
 			peca = null;
 			while (peca == null) {
-				int x = teclado.nextInt();
-				int y = teclado.nextInt();
+				System.out.println();
+				System.out.println("Vez do jogador "+ jogo.getDaVez().getNome());
+				System.out.println("Escolha sua peça ");
+				System.out.print("Linha :");
+				linha = teclado.nextInt();
+				System.out.print("Coluna :");
+				coluna = teclado.nextInt();
+				System.out.println();
+				peca = jogo.escolherPeca(linha, coluna);
 				
-				peca = jogo.escolherPeca(x, y);
+			}
+			List<JogadasPossiveis> jogadasPossiveis = jogo.getJogadaPossivel(linha, coluna);
+			if(jogadasPossiveis.size() > 0) {
+				for (JogadasPossiveis jogadas : jogadasPossiveis) {
+					System.out.println();
+					System.out.println("Jogadas possiveis: ");
+					System.out.print("Linha " + jogadas.getLinha());
+					System.out.println(" Coluna " + jogadas.getColuna());
+					System.out.println();
+				}
 			}
 			
-			jogo.imprimirTabuleiro();
-			
 			System.out.println();
+			System.out.print("Linha onde quer jogar: ");
+			linha_saida = teclado.nextInt();
+			System.out.print("Coluna onde quer jogar: ");
+			coluna_saida = teclado.nextInt();
 			
-			int x_saida = teclado.nextInt();
 			
-			int y_saida = teclado.nextInt();
+			jogo.moverPeca(peca, linha_saida, coluna_saida);
 			
-			jogo.moverPeca(peca, x_saida, y_saida);
 			
 			System.out.println();
 			
