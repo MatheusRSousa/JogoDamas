@@ -10,6 +10,9 @@ public class Jogo {
 	private int colunaAnterior;
 	private Tabuleiro tabuleiro;
 	private int qntdJogadas = 0;
+	private List<JogadasPossiveis> jogadasPossiveis;
+	private List<JogadasPossiveis> possiveisAtaques;
+	private List<JogadasPossiveis> possiveisComidas;
 
 	public Jogo(Jogador jogador1, Jogador jogador2, Tabuleiro tabuleiro) {
 		this.jogador1 = jogador1;
@@ -17,21 +20,56 @@ public class Jogo {
 		this.tabuleiro = tabuleiro;
 	}
 
+	
+	public List<JogadasPossiveis> getJogadasPossiveis() {
+		return jogadasPossiveis;
+	}
+
+
+	public void setJogadasPossiveis(List<JogadasPossiveis> jogadasPossiveis) {
+		this.jogadasPossiveis = jogadasPossiveis;
+	}
+
+
+	public List<JogadasPossiveis> getPossiveisAtaques() {
+		return possiveisAtaques;
+	}
+
+
+	public void setPossiveisAtaques(List<JogadasPossiveis> possiveisAtaques) {
+		this.possiveisAtaques = possiveisAtaques;
+	}
+
+
+	public List<JogadasPossiveis> getPossiveisComidas() {
+		return possiveisComidas;
+	}
+
+
+	public void setPossiveisComidas(List<JogadasPossiveis> possiveisComidas) {
+		this.possiveisComidas = possiveisComidas;
+	}
+
+
 	public void moverPeca(Peca peca, int linhaSaida, int colunaSaida) {
-		List<List<JogadasPossiveis>> jogadasPossiveis = getJogadaPossivel(linhaAnterior, colunaAnterior);
 		boolean jogadaPossivel = false;
-		for (List<JogadasPossiveis> jogadasPossiveis2 : jogadasPossiveis) {
-			if(jogadasPossiveis2.get(0).getColuna() == colunaSaida && jogadasPossiveis2.get(0).getLinha()  == linhaSaida) {
+		for (JogadasPossiveis jogadasPossiveis : jogadasPossiveis) {
+			if(jogadasPossiveis.getLinha() == linhaSaida && jogadasPossiveis.getColuna() == colunaSaida) {
 				jogadaPossivel = true;
+			}
+		}
+		for (JogadasPossiveis possiveisAtaques : possiveisAtaques) {
+			if(possiveisAtaques.getColuna() == colunaSaida && possiveisAtaques.getLinha() == linhaSaida) {
+				jogadaPossivel = true;
+				for (JogadasPossiveis possiveisComidas : possiveisComidas) {
+					tabuleiro.getTabuleiro()[possiveisComidas.getColuna()][possiveisComidas.getLinha()] = null;
+				}
 			}
 		}
 		if (jogadaPossivel) {
 			System.out.println("Jogada valida");
 			tabuleiro.getTabuleiro()[colunaAnterior][linhaAnterior] = null;
 			tabuleiro.getTabuleiro()[colunaSaida][linhaSaida] = peca;
-			if((colunaSaida >= colunaAnterior-2 || colunaSaida <= colunaAnterior+2)) {
-				
-			}
 			if((colunaSaida == 0 && getDaVez().getPeca().getLadoTabuleiro() == 0)||
 					(colunaSaida == tabuleiro.getTamanho()-1 && getDaVez().getPeca().getLadoTabuleiro() == 1))  {
 				tabuleiro.getTabuleiro()[colunaSaida][linhaSaida].setDama(true);
@@ -50,7 +88,8 @@ public class Jogo {
 			Peca peca = tabu[coluna][linha];
 			if (peca != null) {
 				if (peca.getCor() == jogadorVez.getPeca().getCor()) {
-					if (getJogadaPossivel(linha, coluna).size() > 0) {
+					JogadaPossivel(linha, coluna);
+					if (jogadasPossiveis.size() > 0 || possiveisAtaques.size() > 0) {
 						setJogadaXanterior(linha);
 						setJogadaYanterior(coluna);
 						return peca;
@@ -70,36 +109,23 @@ public class Jogo {
 	}
 
 	// Retorna se existe jogada possivel
-	public List<List<JogadasPossiveis>> getJogadaPossivel(int linha, int coluna) {
-		JogadasPossiveis jogadasPossiveis = new JogadasPossiveis(tabuleiro);
-
+	public void JogadaPossivel(int linha, int coluna) {
+		JogadasPossiveis jogadas = new JogadasPossiveis(tabuleiro);
 		Peca[][] tabu = tabuleiro.getTabuleiro();
 
 		Jogador jogadorVez = getDaVez();
-		if (tabu[linha][coluna].isDama()) {
-			return jogadasPossiveis.jogadasDama(linha, coluna, jogadorVez, tabu);
+		if (tabu[coluna][linha].isDama()) {
+			jogadas.jogadasDama(linha, coluna, jogadorVez, tabu);
 		} else if (jogadorVez.getPeca().getLadoTabuleiro() == 0) {
-			return jogadasPossiveis.getJogadaPossivelJ1(linha, coluna, jogadorVez, tabu);
+			jogadas.getJogadaPossivelJ1(linha, coluna, jogadorVez, tabu);
 		} else {
-			return jogadasPossiveis.getJogadaPossivelJ2(linha, coluna, jogadorVez, tabu);
+			jogadas.getJogadaPossivelJ2(linha, coluna, jogadorVez, tabu);
 		}
+		jogadasPossiveis = jogadas.getJogadasPossiveis();
+		possiveisAtaques = jogadas.getPossiveisAtaques();
+		possiveisComidas = jogadas.getPossiveisComidas();
 	}
 
-//	// Verifica se a jogada é válida
-//	private boolean isJogadaValida(int linha, int coluna) {
-//		Peca[][] tabu = tabuleiro.getTabuleiro();
-//
-//		if (coluna % 2 == 0 && linha % 2 != 0) {
-//			if (tabu[coluna][linha] == null) {
-//				return true;
-//			}
-//		} else if (coluna % 2 != 0 && linha % 2 == 0) {
-//			if (tabu[coluna][linha] == null) {
-//				return true;
-//			}
-//		}
-//		return false;
-//	}
 
 	// imprimir tabuleiro
 	public void imprimirTabuleiro() {

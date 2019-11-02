@@ -42,11 +42,28 @@ public class JogoApp {
 				peca = jogo.escolherPeca(linha, coluna);
 				
 			}
-			List<JogadasPossiveis> jogadasPossiveis = jogo.getJogadaPossivel(linha, coluna);
+			jogo.JogadaPossivel(linha, coluna);
+			List<JogadasPossiveis> jogadasPossiveis = jogo.getJogadasPossiveis();
+			List<JogadasPossiveis> possiveisComidas = jogo.getPossiveisComidas();
+			List<JogadasPossiveis> possiveisAtaques = jogo.getPossiveisAtaques();
 			if(jogadasPossiveis.size() > 0) {
 				for (JogadasPossiveis jogadas : jogadasPossiveis) {
 					System.out.println();
 					System.out.println("Jogadas possiveis: ");
+					System.out.print("Linha " + jogadas.getLinha());
+					System.out.println(" Coluna " + jogadas.getColuna());
+					System.out.println();
+				}
+				for (JogadasPossiveis jogadas : possiveisAtaques) {
+					System.out.println();
+					System.out.println("Possiveis ataques: ");
+					System.out.print("Linha " + jogadas.getLinha());
+					System.out.println(" Coluna " + jogadas.getColuna());
+					System.out.println();
+				}
+				for (JogadasPossiveis jogadas : possiveisComidas) {
+					System.out.println();
+					System.out.println("Possiveis comidas: ");
 					System.out.print("Linha " + jogadas.getLinha());
 					System.out.println(" Coluna " + jogadas.getColuna());
 					System.out.println();
