@@ -63,6 +63,7 @@ public class Jogo {
 				jogadaPossivel = true;
 				for (JogadasPossiveis possiveisComidas : possiveisComidas) {
 					tabuleiro.getTabuleiro()[possiveisComidas.getColuna()][possiveisComidas.getLinha()] = null;
+					getDaVez().setPontuacao(getDaVez().getPontuacao()+1);
 				}
 			}
 		}
@@ -130,7 +131,7 @@ public class Jogo {
 	// imprimir tabuleiro
 	public void imprimirTabuleiro() {
 
-		System.out.println("Lado do jogador: " + jogador1.getNome());
+		System.out.println("Lado do jogador: " + jogador1.getNome() + ", pontos: " + jogador1.getPontuacao());
 		System.out.print("    ");
 		for (int coluna = 0; coluna < tabuleiro.getTabuleiro().length; coluna++) {
 			System.out.print(coluna + "    ");
@@ -148,7 +149,7 @@ public class Jogo {
 			}
 			System.out.println();
 		}
-		System.out.println("Lado do jogador: " + jogador2.getNome());
+		System.out.println("Lado do jogador: " + jogador2.getNome() + ", pontos: " +jogador2.getPontuacao());
 	}
 
 	// Retorna a quantidade de perça que o jogador ainda tem no tabuleiro
