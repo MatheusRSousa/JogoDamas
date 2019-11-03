@@ -70,8 +70,8 @@ public class Jogo {
 			System.out.println("Jogada valida");
 			tabuleiro.getTabuleiro()[colunaAnterior][linhaAnterior] = null;
 			tabuleiro.getTabuleiro()[colunaSaida][linhaSaida] = peca;
-			if((colunaSaida == 0 && getDaVez().getPeca().getLadoTabuleiro() == 0)||
-					(colunaSaida == tabuleiro.getTamanho()-1 && getDaVez().getPeca().getLadoTabuleiro() == 1))  {
+			if((colunaSaida == tabuleiro.getTamanho()-1 && getDaVez().getPeca().getLadoTabuleiro() == 0)||
+					(colunaSaida == 0 && getDaVez().getPeca().getLadoTabuleiro() == 1))  {
 				tabuleiro.getTabuleiro()[colunaSaida][linhaSaida].setDama(true);
 			}
 			qntdJogadas++;
@@ -105,7 +105,7 @@ public class Jogo {
 
 	// Retorna o jogador da vez
 	public Jogador getDaVez() {
-		return (this.qntdJogadas % 2 == 0) ? jogador1 : jogador2;
+		return (this.qntdJogadas % 2 == 0) ? jogador2 : jogador1;
 	}
 
 	// Retorna se existe jogada possivel

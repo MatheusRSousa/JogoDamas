@@ -1,5 +1,6 @@
 package br.com.unifacisa.si2.damas.entity;
 
+
 public class Tabuleiro {
 	
 	private static final int LADO_NORTE = 0;
@@ -23,12 +24,12 @@ public class Tabuleiro {
 				if(i < (tamanho/2) -1) {
 					if(i%2 != 0) {
 						if(j % 2 == 0) {
-							tabuleiro[i][j] = jogador1.getPeca(); 
+							tabuleiro[i][j] = new Peca(false, jogador1.getPeca().getCor()); 
 						}
 					}
 					else if(i%2 == 0){
 						if(j % 2 != 0) {
-							tabuleiro[i][j] = jogador1.getPeca();
+							tabuleiro[i][j] = new Peca(false, jogador1.getPeca().getCor()); 
 						}
 					}
 					else {
@@ -39,12 +40,12 @@ public class Tabuleiro {
 				else if(i > tamanho/2){
 					if(i%2 != 0) {
 						if(j % 2 == 0) {
-							tabuleiro[i][j] = jogador2.getPeca(); 
+							tabuleiro[i][j] = new Peca(false, jogador2.getPeca().getCor());  
 						}
 					}
 					else if(i%2 == 0){
 						if(j % 2 != 0) {
-							tabuleiro[i][j] = jogador2.getPeca();
+							tabuleiro[i][j] = new Peca(false, jogador2.getPeca().getCor()); 
 						}
 					}
 				}
