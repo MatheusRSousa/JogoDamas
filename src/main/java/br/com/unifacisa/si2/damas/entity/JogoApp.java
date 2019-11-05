@@ -1,13 +1,14 @@
 package br.com.unifacisa.si2.damas.entity;
 
+
 import java.util.List;
 import java.util.Scanner;
 
 import br.com.unifacisa.si2.damas.Cor;
+import br.com.unifacisa.si2.damas.memento.VoltarJogada;
 import br.com.unifacisa.si2.damas.strategy.TabuleiroGrande;
 import br.com.unifacisa.si2.damas.strategy.TabuleiroMedio;
 import br.com.unifacisa.si2.damas.strategy.TabuleiroPequeno;
-import br.com.unifacisa.si2.memento.VoltarJogada;
 
 public class JogoApp {
 

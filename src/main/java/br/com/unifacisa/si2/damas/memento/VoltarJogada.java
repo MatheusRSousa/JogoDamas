@@ -1,4 +1,4 @@
-package br.com.unifacisa.si2.memento;
+package br.com.unifacisa.si2.damas.memento;
 
 import java.util.ArrayList;
 import java.util.List;
