@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.Scanner;
 
 import br.com.unifacisa.si2.damas.Cor;
+import br.com.unifacisa.si2.damas.strategy.TabuleiroGrande;
+import br.com.unifacisa.si2.damas.strategy.TabuleiroMedio;
+import br.com.unifacisa.si2.damas.strategy.TabuleiroPequeno;
 
 public class JogoApp {
 
@@ -14,8 +17,28 @@ public class JogoApp {
 		Jogador jogador1 = new Jogador("Matheus", new Peca(false, Cor.BLACK));
 		
 		Jogador jogador2 = new Jogador("James", new Peca(false, Cor.WHITE));
-		
-		Tabuleiro tabuleiro = new Tabuleiro(jogador1, jogador2, 8);
+		Tabuleiro tabuleiro = null;
+		int tipoTabuleiro = -1;
+		while(tipoTabuleiro < 0 || tipoTabuleiro > 3) {
+			System.out.println("Digite O tipo de Tabuleiro que gostaria de jogar\n1-Tabuleiro pequeno (8x8)\n"
+					+ "2-Tabuleiro medio (10x10)\n3-Tabuleiro medio (12x12)");
+			tipoTabuleiro = teclado.nextInt();
+			switch (tipoTabuleiro) {
+			case 1:
+				tabuleiro = new Tabuleiro(new TabuleiroPequeno(),jogador1, jogador2);
+				break;
+			case 2:
+				tabuleiro = new Tabuleiro(new TabuleiroMedio(),jogador1, jogador2);
+				break;
+			case 3:
+				tabuleiro = new Tabuleiro(new TabuleiroGrande(),jogador1, jogador2);
+				break;
+			default:
+				
+				System.out.println("Digite um numero Valido");
+				break;
+			}
+		}
 		
 		Jogo jogo = new Jogo(jogador1, jogador2, tabuleiro);
 	
@@ -32,7 +55,7 @@ public class JogoApp {
 			peca = null;
 			while (peca == null) {
 				System.out.println();
-				System.out.println("Vez do jogador "+ jogo.getDaVez().getNome());
+				System.out.println("Vez do jogador "+ jogo.getDaVez().getNome() + "(" + jogo.getDaVez().getPeca().getCor() + ")");
 				System.out.println("Escolha sua peça ");
 				System.out.print("Linha :");
 				linha = teclado.nextInt();

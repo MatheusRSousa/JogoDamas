@@ -71,7 +71,7 @@ public class Jogo {
 			System.out.println("Jogada valida");
 			tabuleiro.getTabuleiro()[colunaAnterior][linhaAnterior] = null;
 			tabuleiro.getTabuleiro()[colunaSaida][linhaSaida] = peca;
-			if((colunaSaida == tabuleiro.getTamanho()-1 && getDaVez().getPeca().getLadoTabuleiro() == 0)||
+			if((colunaSaida == tabuleiro.getTabuleiro().length-1 && getDaVez().getPeca().getLadoTabuleiro() == 0)||
 					(colunaSaida == 0 && getDaVez().getPeca().getLadoTabuleiro() == 1))  {
 				tabuleiro.getTabuleiro()[colunaSaida][linhaSaida].setDama(true);
 			}
@@ -85,7 +85,7 @@ public class Jogo {
 	public Peca escolherPeca(int linha, int coluna) {
 		Peca[][] tabu = tabuleiro.getTabuleiro();
 		Jogador jogadorVez = getDaVez();
-		if (linha < tabuleiro.getTamanho() && coluna < tabuleiro.getTamanho()) {
+		if (linha < tabu.length && coluna < tabu.length) {
 			Peca peca = tabu[coluna][linha];
 			if (peca != null) {
 				if (peca.getCor() == jogadorVez.getPeca().getCor()) {
