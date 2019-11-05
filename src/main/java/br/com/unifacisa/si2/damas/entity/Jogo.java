@@ -25,6 +25,9 @@ public class Jogo {
 		return jogadasPossiveis;
 	}
 
+	public Tabuleiro getTabuleiro() {
+		return tabuleiro;
+	}
 
 	public void setJogadasPossiveis(List<JogadasPossiveis> jogadasPossiveis) {
 		this.jogadasPossiveis = jogadasPossiveis;
@@ -111,7 +114,7 @@ public class Jogo {
 
 	// Retorna se existe jogada possivel
 	public void JogadaPossivel(int linha, int coluna) {
-		JogadasPossiveis jogadas = new JogadasPossiveis(tabuleiro);
+		JogadasPossiveis jogadas = new JogadasPossiveis();
 		Peca[][] tabu = tabuleiro.getTabuleiro();
 
 		Jogador jogadorVez = getDaVez();

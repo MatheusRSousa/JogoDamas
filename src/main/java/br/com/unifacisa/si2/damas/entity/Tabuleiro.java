@@ -17,4 +17,7 @@ public class Tabuleiro {
 	public Peca[][] getTabuleiro(){
 		return tabuleiro;
 	}
+	public void setTabuleiro(Peca[][] tabuleiro) {
+		this.tabuleiro = tabuleiro;
+	}
 }

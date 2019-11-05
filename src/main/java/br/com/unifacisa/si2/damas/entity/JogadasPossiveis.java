@@ -7,13 +7,11 @@ public class JogadasPossiveis {
 
 	private int linha;
 	private int coluna;
-	private Tabuleiro tabuleiro;
 	private List<JogadasPossiveis> jogadasPossiveis;
 	private List<JogadasPossiveis> possiveisAtaques;
 	private List<JogadasPossiveis> possiveisComidas;
 
-	public JogadasPossiveis(Tabuleiro tabuleiro) {
-		this.tabuleiro = tabuleiro;
+	public JogadasPossiveis() {
 		jogadasPossiveis = new ArrayList<JogadasPossiveis>();
 		possiveisAtaques = new ArrayList<JogadasPossiveis>();
 		possiveisComidas = new ArrayList<JogadasPossiveis>();

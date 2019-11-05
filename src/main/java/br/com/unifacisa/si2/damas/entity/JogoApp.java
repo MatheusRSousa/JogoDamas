@@ -7,10 +7,13 @@ import br.com.unifacisa.si2.damas.Cor;
 import br.com.unifacisa.si2.damas.strategy.TabuleiroGrande;
 import br.com.unifacisa.si2.damas.strategy.TabuleiroMedio;
 import br.com.unifacisa.si2.damas.strategy.TabuleiroPequeno;
+import br.com.unifacisa.si2.memento.VoltarJogada;
 
 public class JogoApp {
 
 	public static void main(String[] args) {
+		
+		VoltarJogada jogadasAnteriores = new VoltarJogada();
 		
 		Scanner teclado = new Scanner(System.in);
 		
@@ -26,12 +29,15 @@ public class JogoApp {
 			switch (tipoTabuleiro) {
 			case 1:
 				tabuleiro = new Tabuleiro(new TabuleiroPequeno(),jogador1, jogador2);
+				jogadasAnteriores.AddJogada(tabuleiro.getTabuleiro());
 				break;
 			case 2:
 				tabuleiro = new Tabuleiro(new TabuleiroMedio(),jogador1, jogador2);
+				jogadasAnteriores.AddJogada(tabuleiro.getTabuleiro());
 				break;
 			case 3:
 				tabuleiro = new Tabuleiro(new TabuleiroGrande(),jogador1, jogador2);
+				jogadasAnteriores.AddJogada(tabuleiro.getTabuleiro());
 				break;
 			default:
 				
@@ -51,20 +57,30 @@ public class JogoApp {
 		int cont = 0;
 		int coluna_saida = 0;
 		int linha_saida = 0;
+		Peca[][] a = null;
+		boolean voltouJogada  = false;
 		while(cont < 2) {
 			peca = null;
 			while (peca == null) {
+				
 				System.out.println();
 				System.out.println("Vez do jogador "+ jogo.getDaVez().getNome() + "(" + jogo.getDaVez().getPeca().getCor() + ")");
 				System.out.println("Escolha sua peça ");
 				System.out.print("Linha :");
 				linha = teclado.nextInt();
+				if(linha!= -1) {
+				
 				System.out.print("Coluna :");
 				coluna = teclado.nextInt();
 				System.out.println();
 				peca = jogo.escolherPeca(linha, coluna);
-				
+				} else {
+					a =jogadasAnteriores.voltaJogada();
+					voltouJogada = true;
+					break;
+				}
 			}
+			if(!voltouJogada) {
 			jogo.JogadaPossivel(linha, coluna);
 			List<JogadasPossiveis> jogadasPossiveis = jogo.getJogadasPossiveis();
 			List<JogadasPossiveis> possiveisComidas = jogo.getPossiveisComidas();
@@ -105,9 +121,14 @@ public class JogoApp {
 			
 			System.out.println();
 			
-			jogo.imprimirTabuleiro();
+			jogadasAnteriores.AddJogada(jogo.getTabuleiro().getTabuleiro());
 		
-			
+			}
+			if(a== jogo.getTabuleiro().getTabuleiro()) {
+				System.out.println("deu certo");
+			}
+			jogo.imprimirTabuleiro();
+			voltouJogada = false;
 		}
 		teclado.close();
 	}
