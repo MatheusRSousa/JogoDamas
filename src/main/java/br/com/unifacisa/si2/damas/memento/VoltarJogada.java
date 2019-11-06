@@ -1,31 +1,36 @@
 package br.com.unifacisa.si2.damas.memento;
 
-import java.util.ArrayList;
-import java.util.List;
 
-import br.com.unifacisa.si2.damas.entity.Tabuleiro;
+import java.util.List;
+import java.util.Stack;
+
+import br.com.unifacisa.si2.damas.entity.Peca;
 
 public class VoltarJogada {
-	private List<Tabuleiro> listaDeJogadas; 
-	private int tamanho = -1;
 	
-	public VoltarJogada() {
-		listaDeJogadas =  new ArrayList<Tabuleiro>();
+	private int coluna;
+	
+	private int linha;
+	 
+	private Stack<VoltarJogada> jogadasAnteriores;
+	
+	private Stack<VoltarJogada> jogadasAtuais;
+	
+		
+	public VoltarJogada(int coluna, int linha) {
+		this.coluna = coluna;
+		this.linha = linha;
 	}
 	
-	public List<Tabuleiro> getListaDeJogadas() {
-		return listaDeJogadas;
-	}
-	public void AddJogada(Tabuleiro tabuleiro) {
-		Tabuleiro tabuleiro1 = tabuleiro;
-		getListaDeJogadas().add(tabuleiro1);
-		tamanho++;
+	public void AddJogadaAnterior(int linhaAnterior, int colunaAnterior) {
+		jogadasAnteriores.add(new VoltarJogada(colunaAnterior, linhaAnterior));
 	}
 	
-	public Tabuleiro voltaJogada(){
-		Tabuleiro tabuleiro = getListaDeJogadas().get(tamanho-1);
-		getListaDeJogadas().remove(tamanho);
-		tamanho--;
-		return tabuleiro;
+	public void AddJogadaAtual(int linhaAtual, int colunaAtual) {
+		jogadasAtuais.add(new VoltarJogada(linhaAtual, colunaAtual));
+	}
+	
+	public	 voltaJogada(){
+		
 	}
 }

@@ -64,7 +64,7 @@ public class JogoApp {
 				System.out.println();
 				peca = jogo.escolherPeca(linha, coluna);
 				} else {
-					jogo.setTabuleiro((jogadasAnteriores.voltaJogada()));
+					jogo.getTabuleiro().setTabuleiro((jogadasAnteriores.voltaJogada()));
 					voltouJogada = true;
 					break;
 				}
@@ -109,10 +109,12 @@ public class JogoApp {
 			
 			
 			System.out.println();
+			Tabuleiro tabuleiro = new Tabuleiro(jogo.getTabuleiro().getTabuleiro());
 			
-			jogadasAnteriores.AddJogada(jogo.getTabuleiro());
+			jogadasAnteriores.AddJogada(tabuleiro.getTabuleiro());
 		
 			}
+			
 			
 			jogo.imprimirTabuleiro();
 			voltouJogada = false;
