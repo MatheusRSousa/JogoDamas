@@ -33,7 +33,6 @@ public class BuilderDama{
 			String nomeJogador2,
 			int corPecaJogador1)  throws Exception {
 		
-		jogadasAnteriores = new VoltarJogada();
 
 		switch (corPecaJogador1) {
 		case 1:
@@ -60,15 +59,12 @@ public class BuilderDama{
 		switch (tipoTabuleiro) {
 		case 1:
 			tabuleiro = new Tabuleiro(new TabuleiroPequeno(), jogador1, jogador2);
-			jogadasAnteriores.AddJogada(tabuleiro.getTabuleiro());
 			break;
 		case 2:
 			tabuleiro = new Tabuleiro(new TabuleiroMedio(), jogador1, jogador2);
-			jogadasAnteriores.AddJogada(tabuleiro.getTabuleiro());
 			break;
 		case 3:
 			tabuleiro = new Tabuleiro(new TabuleiroGrande(), jogador1, jogador2);
-			jogadasAnteriores.AddJogada(tabuleiro.getTabuleiro());
 			break;
 		default:
 			System.out.println("Digite um numero Valido");

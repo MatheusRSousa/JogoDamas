@@ -33,7 +33,6 @@ public class JogoApp {
 		tipoTabuleiro = teclado.nextInt();
 		
 		BuilderDama builder = new BuilderDama(tipoTabuleiro, nomeJogador1, nomeJogador2, corPecaJogador1);
-		VoltarJogada jogadasAnteriores = builder.getJogadasAnteriores();
 		
 		Jogo jogo = builder.getJogo();
 		jogo.imprimirTabuleiro();
@@ -48,6 +47,7 @@ public class JogoApp {
 		int coluna_saida = 0;
 		int linha_saida = 0;
 		boolean voltouJogada  = false;
+		VoltarJogada voltarJogada = new VoltarJogada();
 		while(cont < 2) {
 			peca = null;
 			while (peca == null) {
@@ -63,9 +63,18 @@ public class JogoApp {
 				coluna = teclado.nextInt();
 				System.out.println();
 				peca = jogo.escolherPeca(linha, coluna);
+				}if (jogo.getQntdJogadas() == 0) {
+					System.out.println("Impossivel Voltar Jogada");
+					
 				} else {
-					jogo.getTabuleiro().setTabuleiro((jogadasAnteriores.voltaJogada()));
+					VoltarJogada jogada = voltarJogada.getJogadaAtuais();
+					VoltarJogada volta = voltarJogada.getJogadaAnterior();					
+					System.out.println(volta.getColuna() + " " +volta.getLinha());
+
 					voltouJogada = true;
+					jogo.diminuiJogada();
+					jogo.getTabuleiro().getTabuleiro()[volta.getLinha()][volta.getColuna()] = jogo.getDaVez().getPeca();
+					jogo.getTabuleiro().getTabuleiro()[jogada.getLinha()][jogada.getColuna()] = null;	
 					break;
 				}
 			}
@@ -107,11 +116,11 @@ public class JogoApp {
 			
 			jogo.moverPeca(peca, linha_saida, coluna_saida);
 			
+			voltarJogada.AddJogadaAnterior(coluna, linha);
+			voltarJogada.AddJogadaAtual( linha_saida, coluna_saida);
 			
 			System.out.println();
-			Tabuleiro tabuleiro = new Tabuleiro(jogo.getTabuleiro().getTabuleiro());
 			
-			jogadasAnteriores.AddJogada(tabuleiro.getTabuleiro());
 		
 			}
 			

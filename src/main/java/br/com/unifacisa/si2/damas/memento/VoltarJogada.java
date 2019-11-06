@@ -1,36 +1,59 @@
 package br.com.unifacisa.si2.damas.memento;
 
 
-import java.util.List;
-import java.util.Stack;
 
-import br.com.unifacisa.si2.damas.entity.Peca;
+import java.util.Stack;
 
 public class VoltarJogada {
 	
 	private int coluna;
 	
 	private int linha;
-	 
-	private Stack<VoltarJogada> jogadasAnteriores;
 	
-	private Stack<VoltarJogada> jogadasAtuais;
+	 
+	private Stack<VoltarJogada> jogadasAnteriores = new Stack<VoltarJogada>();
+	
+	private Stack<VoltarJogada> jogadasAtuais = new Stack<VoltarJogada>();
 	
 		
+	public VoltarJogada() {
+	}
 	public VoltarJogada(int coluna, int linha) {
 		this.coluna = coluna;
 		this.linha = linha;
 	}
 	
 	public void AddJogadaAnterior(int linhaAnterior, int colunaAnterior) {
-		jogadasAnteriores.add(new VoltarJogada(colunaAnterior, linhaAnterior));
+		VoltarJogada aux = new VoltarJogada(colunaAnterior, linhaAnterior);
+		jogadasAnteriores.push(aux);
 	}
 	
 	public void AddJogadaAtual(int linhaAtual, int colunaAtual) {
-		jogadasAtuais.add(new VoltarJogada(linhaAtual, colunaAtual));
+		jogadasAtuais.push(new VoltarJogada(linhaAtual, colunaAtual));
 	}
 	
-	public	 voltaJogada(){
-		
+	public VoltarJogada getJogadaAnterior() {
+		return jogadasAnteriores.pop();
 	}
+
+	public VoltarJogada getJogadaAtuais() {
+		return jogadasAtuais.pop();
+	}
+	public int getColuna() {
+		return coluna;
+	}
+
+	public void setColuna(int coluna) {
+		this.coluna = coluna;
+	}
+
+	public int getLinha() {
+		return linha;
+	}
+
+	public void setLinha(int linha) {
+		this.linha = linha;
+	}
+	
+	
 }

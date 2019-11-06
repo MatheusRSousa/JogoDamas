@@ -188,6 +188,12 @@ public class Jogo {
 	public void setJogadaYanterior(int jogadaYanterior) {
 		this.colunaAnterior = jogadaYanterior;
 	}
+	public int getQntdJogadas() {
+		return qntdJogadas;
+	}
+	public void diminuiJogada() {
+		qntdJogadas--;
+	}
 
 //	//Verifica se o jogo acabou
 //	public boolean acabouJogo() {
