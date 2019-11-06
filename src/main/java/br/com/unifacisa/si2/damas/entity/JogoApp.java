@@ -1,26 +1,45 @@
 package br.com.unifacisa.si2.damas.entity;
 
+
 import java.util.List;
+
 import java.util.Scanner;
 
-import br.com.unifacisa.si2.damas.Cor;
+
+import br.com.unifacisa.si2.damas.builder.BuilderDama;
+import br.com.unifacisa.si2.damas.memento.VoltarJogada;
+
 
 public class JogoApp {
 
-	public static void main(String[] args) {
-		
+	
+	public static void main(String[] args) throws Exception {
 		Scanner teclado = new Scanner(System.in);
 		
-		Jogador jogador1 = new Jogador("Matheus", new Peca(false, Cor.BLACK));
+		String nomeJogador2;
+		String nomeJogador1;
+		int corPecaJogador1;
+		int tipoTabuleiro;
 		
-		Jogador jogador2 = new Jogador("James", new Peca(false, Cor.WHITE));
+		System.out.print("Digite o nome do primeiro Jogador: ");
+		nomeJogador1 = teclado.next();
+		System.out.print("Escolha a cor da peca: Digite 1 para branco, 2 para preto: ");
+		corPecaJogador1 = teclado.nextInt();
+		System.out.print("Digite o nome do segundo Jogador: ");
+		nomeJogador2 = teclado.next();
 		
-		Tabuleiro tabuleiro = new Tabuleiro(jogador1, jogador2, 8);
+		System.out.println("Digite O tipo de Tabuleiro que gostaria de jogar\n1-Tabuleiro pequeno (8x8)\n"
+				+ "2-Tabuleiro medio (10x10)\n3-Tabuleiro medio (12x12)");
+		tipoTabuleiro = teclado.nextInt();
 		
-		Jogo jogo = new Jogo(jogador1, jogador2, tabuleiro);
+		BuilderDama builder = new BuilderDama(tipoTabuleiro, nomeJogador1, nomeJogador2, corPecaJogador1);
+		VoltarJogada jogadasAnteriores = builder.getJogadasAnteriores();
+		
+		Jogo jogo = builder.getJogo();
+		jogo.imprimirTabuleiro();
 	
 		Peca peca = null;
-		jogo.imprimirTabuleiro();
+		
 		
 		System.out.println();
 		int linha = 0;
@@ -28,20 +47,29 @@ public class JogoApp {
 		int cont = 0;
 		int coluna_saida = 0;
 		int linha_saida = 0;
+		boolean voltouJogada  = false;
 		while(cont < 2) {
 			peca = null;
 			while (peca == null) {
+				
 				System.out.println();
-				System.out.println("Vez do jogador "+ jogo.getDaVez().getNome());
+				System.out.println("Vez do jogador "+ jogo.getDaVez().getNome() + "(" + jogo.getDaVez().getPeca().getCor() + ")");
 				System.out.println("Escolha sua peça ");
 				System.out.print("Linha :");
 				linha = teclado.nextInt();
+				if(linha!= -1) {
+				
 				System.out.print("Coluna :");
 				coluna = teclado.nextInt();
 				System.out.println();
 				peca = jogo.escolherPeca(linha, coluna);
-				
+				} else {
+					jogo.setTabuleiro((jogadasAnteriores.voltaJogada()));
+					voltouJogada = true;
+					break;
+				}
 			}
+			if(!voltouJogada) {
 			jogo.JogadaPossivel(linha, coluna);
 			List<JogadasPossiveis> jogadasPossiveis = jogo.getJogadasPossiveis();
 			List<JogadasPossiveis> possiveisComidas = jogo.getPossiveisComidas();
@@ -82,10 +110,14 @@ public class JogoApp {
 			
 			System.out.println();
 			
-			jogo.imprimirTabuleiro();
+			jogadasAnteriores.AddJogada(jogo.getTabuleiro());
 		
+			}
 			
+			jogo.imprimirTabuleiro();
+			voltouJogada = false;
 		}
 		teclado.close();
 	}
+	
 }

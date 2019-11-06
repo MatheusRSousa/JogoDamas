@@ -7,13 +7,11 @@ public class JogadasPossiveis {
 
 	private int linha;
 	private int coluna;
-	private Tabuleiro tabuleiro;
 	private List<JogadasPossiveis> jogadasPossiveis;
 	private List<JogadasPossiveis> possiveisAtaques;
 	private List<JogadasPossiveis> possiveisComidas;
 
-	public JogadasPossiveis(Tabuleiro tabuleiro) {
-		this.tabuleiro = tabuleiro;
+	public JogadasPossiveis() {
 		jogadasPossiveis = new ArrayList<JogadasPossiveis>();
 		possiveisAtaques = new ArrayList<JogadasPossiveis>();
 		possiveisComidas = new ArrayList<JogadasPossiveis>();
@@ -143,7 +141,7 @@ public class JogadasPossiveis {
 	// verifica se a jogada do jogador 2 é possivel
 	public void getJogadaPossivelJ2(int linha, int coluna, Jogador jogadorVez, Peca[][] tabu) {
 
-		if (linha >= 0 && linha < tabuleiro.getTamanho() && coluna >= 0 && coluna < tabuleiro.getTamanho()) {
+		if (linha >= 0 && linha < tabu.length && coluna >= 0 && coluna < tabu.length) {
 			if (linha + 1 < tabu.length && coluna -1 >= 0) {
 				if(tabu[coluna -1][linha+1] == null) {
 					jogadasPossiveis.add(new JogadasPossiveis(linha+1, coluna-1));
@@ -176,7 +174,7 @@ public class JogadasPossiveis {
 	// verifica se a jogada da peça que o jogador 1 escolheu é possivel
 	public void getJogadaPossivelJ1(int linha, int coluna, Jogador jogadorVez, Peca[][] tabu) {
 		
-		if (linha >= 0 && linha < tabuleiro.getTamanho() && coluna >= 0 && coluna < tabuleiro.getTamanho()) {
+		if (linha >= 0 && linha < tabu.length && coluna >= 0 && coluna < tabu.length) {
 			if (linha + 1 < tabu.length && coluna +1 < tabu.length) {
 				if(tabu[coluna +1][linha+1] == null) {
 					jogadasPossiveis.add(new JogadasPossiveis(linha+1, coluna+1));
@@ -205,6 +203,4 @@ public class JogadasPossiveis {
 			}
 		}
 	}
-	
-
 }

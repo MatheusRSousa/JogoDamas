@@ -1,6 +1,6 @@
 package br.com.unifacisa.si2.damas;
 
-public enum Cor{
-	
-	BLACK,RED,WHITE,BLUE
+public enum Cor {
+
+	BRANCO, PRETOO, BRANCOD, PRETOD
 }
