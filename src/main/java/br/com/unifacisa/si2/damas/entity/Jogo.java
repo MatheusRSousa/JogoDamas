@@ -117,6 +117,10 @@ public class Jogo {
 	public Jogador getDaVez() {
 		return (this.qntdJogadas % 2 == 0) ? jogador2 : jogador1;
 	}
+	public Jogador getNaoDaVez() {
+		return (this.qntdJogadas % 2 == 0) ? jogador1 : jogador2;
+
+	}
 
 	// Retorna se existe jogada possivel
 	public void JogadaPossivel(int linha, int coluna) {

@@ -68,12 +68,17 @@ public class JogoApp {
 					
 				} else {
 					VoltarJogada jogada = voltarJogada.getJogadaAtuais();
-					VoltarJogada volta = voltarJogada.getJogadaAnterior();					
+					VoltarJogada volta = voltarJogada.getJogadaAnterior();		
+					VoltarJogada comidas = voltarJogada.getPecasComidas();
+					
+					if (comidas != null) {
+						jogo.getTabuleiro().getTabuleiro()[comidas.getLinha()][comidas.getColuna()] = jogo.getDaVez().getPeca();	
+					}
 					System.out.println(volta.getColuna() + " " +volta.getLinha());
 
 					voltouJogada = true;
 					jogo.diminuiJogada();
-					jogo.getTabuleiro().getTabuleiro()[volta.getLinha()][volta.getColuna()] = jogo.getDaVez().getPeca();
+					jogo.getTabuleiro().getTabuleiro()[volta.getLinha()][volta.getColuna()] = jogo.getNaoDaVez().getPeca();
 					jogo.getTabuleiro().getTabuleiro()[jogada.getLinha()][jogada.getColuna()] = null;	
 					break;
 				}
@@ -115,6 +120,23 @@ public class JogoApp {
 			
 			
 			jogo.moverPeca(peca, linha_saida, coluna_saida);
+			
+			//if(tabu[coluna - 1][linha - 1] != null) {
+			int aux  = 0;
+			boolean comeu = false;
+			for (JogadasPossiveis jogadas : possiveisAtaques) {
+				
+				if(jogadas.getColuna() ==  coluna_saida && jogadas.getLinha() == linha_saida) {
+					voltarJogada.AddComidas(possiveisComidas.get(aux).getLinha(), possiveisComidas.get(aux).getColuna());
+					comeu = true;
+					break;
+				}
+				aux++;
+				
+			}
+			if(!comeu) {
+				voltarJogada.AddComidas(-1,-1);
+			}
 			
 			voltarJogada.AddJogadaAnterior(coluna, linha);
 			voltarJogada.AddJogadaAtual( linha_saida, coluna_saida);

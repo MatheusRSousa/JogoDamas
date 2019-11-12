@@ -15,7 +15,9 @@ public class VoltarJogada {
 	
 	private Stack<VoltarJogada> jogadasAtuais = new Stack<VoltarJogada>();
 	
+	private Stack<VoltarJogada> PecasComidas = new Stack<VoltarJogada>();
 		
+	
 	public VoltarJogada() {
 	}
 	public VoltarJogada(int coluna, int linha) {
@@ -32,12 +34,25 @@ public class VoltarJogada {
 		jogadasAtuais.push(new VoltarJogada(linhaAtual, colunaAtual));
 	}
 	
+	public void AddComidas(int linhaAtual, int colunaAtual) {
+		if(linhaAtual!= -1) {
+			PecasComidas.push(new VoltarJogada(linhaAtual, colunaAtual));	
+		}else {
+			PecasComidas.push(null);
+		}
+		
+	}
+	
+	
 	public VoltarJogada getJogadaAnterior() {
 		return jogadasAnteriores.pop();
 	}
 
 	public VoltarJogada getJogadaAtuais() {
 		return jogadasAtuais.pop();
+	}
+	public VoltarJogada getPecasComidas() {
+		return PecasComidas.pop();
 	}
 	public int getColuna() {
 		return coluna;
