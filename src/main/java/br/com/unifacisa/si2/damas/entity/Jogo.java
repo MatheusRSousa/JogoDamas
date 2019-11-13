@@ -1,6 +1,10 @@
 package br.com.unifacisa.si2.damas.entity;
 
+import java.util.Arrays;
 import java.util.List;
+
+
+import br.com.unifacisa.si2.damas.memento.VoltarJogada;
 
 public class Jogo {
 
@@ -59,6 +63,20 @@ public class Jogo {
 		this.possiveisComidas = possiveisComidas;
 	}
 
+	public void setJogadaXanterior(int jogadaXanterior) {
+		this.linhaAnterior = jogadaXanterior;
+	}
+
+	public void setJogadaYanterior(int jogadaYanterior) {
+		this.colunaAnterior = jogadaYanterior;
+	}
+	public int getQntdJogadas() {
+		return qntdJogadas;
+	}
+	public void diminuiJogada() {
+		qntdJogadas--;
+	}
+	
 
 	public void moverPeca(Peca peca, int linhaSaida, int colunaSaida) {
 		boolean jogadaPossivel = false;
@@ -143,29 +161,40 @@ public class Jogo {
 
 	// imprimir tabuleiro
 	public void imprimirTabuleiro() {
+		int tamanhoPrintSigla = tabuleiro.getTabuleiro().length*8-5;
+	    char sigla = '-';
+	    char sigla2 = '_';
+	    char[] arrayDeSiglas = new char[tamanhoPrintSigla];
+	    char[] arrayDeSiglas2 = new char[tamanhoPrintSigla];
+	    Arrays.fill(arrayDeSiglas, sigla);
+	    Arrays.fill(arrayDeSiglas2, sigla2);
+	    String stringComAsSiglas = new String(arrayDeSiglas);
+	    String stringComAsSiglas2 = new String(arrayDeSiglas2);
 		System.out.println();
 		System.out.println("Lado do jogador: " + jogador1.getNome() + ", pontos: " + jogador1.getPontuacao());
 		System.out.print("     ");
-		for (int coluna = 0; coluna < tabuleiro.getTabuleiro().length; coluna++) {
+		for (int coluna = 00; coluna < tabuleiro.getTabuleiro().length; coluna++) {
 			System.out.print(coluna + "      ");
 		}
 		System.out.println();
-		System.out.println("_________________________________________________________");
+		System.out.println(stringComAsSiglas2);
 		for (int coluna = 0; coluna < tabuleiro.getTabuleiro().length; coluna++) {
-			System.out.print(coluna + " ");
+			System.out.print(coluna + "|");
 			for (int linha = 0; linha < tabuleiro.getTabuleiro().length; linha++) {
-
+				System.out.print("|");
 				if (tabuleiro.getTabuleiro()[coluna][linha] == null) {
-					System.out.print("|      |");
+					System.out.print("      ");
 				} else {
 					if(linha == 0) {
-						System.out.print("|");
+						System.out.print("");
 					}
 					System.out.print(tabuleiro.getTabuleiro()[coluna][linha].getCor());
 				}
 			}
-			System.out.println();
+			System.out.println("|");
+		    System.out.println(stringComAsSiglas);
 		}
+
 		System.out.println("Lado do jogador: " + jogador2.getNome() + ", pontos: " +jogador2.getPontuacao());
 	}
 
@@ -185,19 +214,29 @@ public class Jogo {
 		return qtdPeca;
 	}
 
-	public void setJogadaXanterior(int jogadaXanterior) {
-		this.linhaAnterior = jogadaXanterior;
-	}
+	
+	public VoltarJogada voltarJogada(VoltarJogada voltarJogada) {
+		
+		if (getQntdJogadas() == 0) {
+			System.out.println("Impossivel Voltar Jogada");
+			
+		} else {
+			VoltarJogada jogada = voltarJogada.getJogadaAtuais();
+			VoltarJogada volta = voltarJogada.getJogadaAnterior();		
+			VoltarJogada comidas = voltarJogada.getPecasComidas();
+			
+			if (comidas != null) {
+				getTabuleiro().getTabuleiro()[comidas.getLinha()][comidas.getColuna()] = getDaVez().getPeca();	
+			}
+			System.out.println(volta.getColuna() + " " +volta.getLinha());
 
-	public void setJogadaYanterior(int jogadaYanterior) {
-		this.colunaAnterior = jogadaYanterior;
+			diminuiJogada();
+			getTabuleiro().getTabuleiro()[volta.getLinha()][volta.getColuna()] = getDaVez().getPeca();
+			getTabuleiro().getTabuleiro()[jogada.getLinha()][jogada.getColuna()] = null;	
+		}
+		return voltarJogada;
 	}
-	public int getQntdJogadas() {
-		return qntdJogadas;
-	}
-	public void diminuiJogada() {
-		qntdJogadas--;
-	}
+	
 
 //	//Verifica se o jogo acabou
 //	public boolean acabouJogo() {
