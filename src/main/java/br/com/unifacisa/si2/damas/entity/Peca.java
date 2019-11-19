@@ -1,6 +1,6 @@
 package br.com.unifacisa.si2.damas.entity;
 
-import br.com.unifacisa.si2.damas.Cor;
+import br.com.unifacisa.si2.damas.enuns.Cor;
 
 public class Peca {
 

@@ -1,4 +1,4 @@
-package br.com.unifacisa.si2.damas;
+package br.com.unifacisa.si2.damas.enuns;
 
 public enum Cor {
 

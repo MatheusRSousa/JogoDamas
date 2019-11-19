@@ -1,4 +1,4 @@
-package br.com.unifacisa.si2.damas.entity;
+package br.com.unifacisa.si2.damas;
 
 
 import java.util.List;
@@ -7,7 +7,9 @@ import java.util.Scanner;
 
 
 import br.com.unifacisa.si2.damas.builder.BuilderDama;
-import br.com.unifacisa.si2.damas.memento.VoltarJogada;
+import br.com.unifacisa.si2.damas.entity.JogadasPossiveis;
+import br.com.unifacisa.si2.damas.entity.Jogo;
+import br.com.unifacisa.si2.damas.entity.Peca;
 
 
 public class JogoApp {
@@ -39,12 +41,12 @@ public class JogoApp {
 		Peca peca = null;
 		
 		int linha = 0;
-		int coluna= 0;
-		int cont = 0;
-		int coluna_saida = 0;
+		String coluna= "";
+		String coluna_saida = "";
 		int linha_saida = 0;
-		VoltarJogada voltarJogada = new VoltarJogada();
-		while(cont < 2) {
+		
+		//iniciou o jogo
+		while(!jogo.acabouJogo()) {
 			peca = null;
 			while (peca == null) {
 				System.out.println();
@@ -52,85 +54,65 @@ public class JogoApp {
 				System.out.println();
 				System.out.println("Vez do jogador "+ jogo.getDaVez().getNome() + "(" + jogo.getDaVez().getPeca().getCor() + ")");
 				System.out.println("Escolha sua peça ");
-				System.out.print("Linha :");
+				System.out.print("Coluna :");
 				linha = teclado.nextInt();
 				if(linha!= -1) {
-					System.out.print("Coluna :");
-					coluna = teclado.nextInt();
+					System.out.print("Linha :");
+					coluna = teclado.next();
 					System.out.println();
 					peca = jogo.escolherPeca(linha, coluna);
+					
 				}else{ 
-					voltarJogada = jogo.voltarJogada(voltarJogada);
+					jogo.voltarJogada();
 				}
 			}
-			if(voltarJogada!=null) {
 			jogo.JogadaPossivel(linha, coluna);
 			List<JogadasPossiveis> jogadasPossiveis = jogo.getJogadasPossiveis();
 			List<JogadasPossiveis> possiveisComidas = jogo.getPossiveisComidas();
 			List<JogadasPossiveis> possiveisAtaques = jogo.getPossiveisAtaques();
-			if(jogadasPossiveis.size() > 0) {
+			if(jogadasPossiveis.size() > 0 || possiveisAtaques.size() > 0) {
 				for (JogadasPossiveis jogadas : jogadasPossiveis) {
+					int num = jogadas.getColuna()+97;
+					String letra = String.valueOf((char)num);
 					System.out.println();
 					System.out.println("Jogadas possiveis: ");
-					System.out.print("Linha " + jogadas.getLinha());
-					System.out.println(" Coluna " + jogadas.getColuna());
+					System.out.print("Coluna " + jogadas.getLinha());
+					System.out.println(" Linha " + letra);
 					System.out.println();
 				}
 				for (JogadasPossiveis jogadas : possiveisAtaques) {
+					int num = jogadas.getColuna()+97;
+					String letra = String.valueOf((char)num);
 					System.out.println();
 					System.out.println("Possiveis ataques: ");
-					System.out.print("Linha " + jogadas.getLinha());
-					System.out.println(" Coluna " + jogadas.getColuna());
+					System.out.print("Coluna " + jogadas.getLinha());
+					System.out.println(" Linha " + letra);
 					System.out.println();
 				}
 				for (JogadasPossiveis jogadas : possiveisComidas) {
+					int num = jogadas.getColuna()+97;
+					String letra = String.valueOf((char)num);
 					System.out.println();
 					System.out.println("Possiveis comidas: ");
-					System.out.print("Linha " + jogadas.getLinha());
-					System.out.println(" Coluna " + jogadas.getColuna());
+					System.out.print("Coluna " + jogadas.getLinha());
+					System.out.println(" Linha " + letra);
 					System.out.println();
 				}
 			}
 			
 			System.out.println();
-			System.out.print("Linha onde quer jogar: ");
-			linha_saida = teclado.nextInt();
 			System.out.print("Coluna onde quer jogar: ");
-			coluna_saida = teclado.nextInt();
+			linha_saida = teclado.nextInt();
+			System.out.print("Linha onde quer jogar: ");
+			coluna_saida = teclado.next();
 			
 			
 			jogo.moverPeca(peca, linha_saida, coluna_saida);
-			
-			//if(tabu[coluna - 1][linha - 1] != null) {
-			int aux  = 0;
-			boolean comeu = false;
-			for (JogadasPossiveis jogadas : possiveisAtaques) {
-				
-				if(jogadas.getColuna() ==  coluna_saida && jogadas.getLinha() == linha_saida) {
-					voltarJogada.AddComidas(possiveisComidas.get(aux).getLinha(), possiveisComidas.get(aux).getColuna());
-					comeu = true;
-					break;
-				}
-				aux++;
-				
-			}
-			if(!comeu) {
-				voltarJogada.AddComidas(-1,-1);
-			}
-			
-			voltarJogada.AddJogadaAnterior(coluna, linha);
-			voltarJogada.AddJogadaAtual( linha_saida, coluna_saida);
-			
-			
-			
-			
-			}
-			
-			
-			
-		}
 		
+			}
+
 		teclado.close();
+		System.out.println("Vencedor do jogo é : " + jogo.getVencedor());
 	}
 	
 }

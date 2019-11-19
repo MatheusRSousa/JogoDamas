@@ -2,11 +2,11 @@ package br.com.unifacisa.si2.damas.builder;
 
 
 
-import br.com.unifacisa.si2.damas.Cor;
 import br.com.unifacisa.si2.damas.entity.Jogador;
 import br.com.unifacisa.si2.damas.entity.Jogo;
 import br.com.unifacisa.si2.damas.entity.Peca;
 import br.com.unifacisa.si2.damas.entity.Tabuleiro;
+import br.com.unifacisa.si2.damas.enuns.Cor;
 import br.com.unifacisa.si2.damas.memento.VoltarJogada;
 import br.com.unifacisa.si2.damas.strategy.TabuleiroGrande;
 import br.com.unifacisa.si2.damas.strategy.TabuleiroMedio;
@@ -48,13 +48,17 @@ public class BuilderDama{
 			break;
 		}
 
+		
 		if (pecajogador1 == null) {
 			throw new Exception("Cor da peca invalida");
 		}
-
-		jogador1 = new Jogador(nomeJogador1, pecajogador1);
-
-		jogador2 = new Jogador(nomeJogador2, pecaJogador2);
+		if(pecajogador1.getCor() == Cor.BRANCO) {
+			jogador2 = new Jogador(nomeJogador1, pecajogador1);
+			jogador1 = new Jogador(nomeJogador2, pecaJogador2);
+		}else {
+			jogador1 = new Jogador(nomeJogador1, pecajogador1);
+			jogador2 = new Jogador(nomeJogador2, pecaJogador2);
+		}
 
 		switch (tipoTabuleiro) {
 		case 1:
@@ -74,8 +78,9 @@ public class BuilderDama{
 		if(tabuleiro == null) {
 			throw new Exception("Tipo do tabuleiro invalido");
 		}
+		VoltarJogada voltarJogada = new VoltarJogada();
 		
-		jogo = new Jogo(jogador1, jogador2, tabuleiro);
+		jogo = new Jogo(jogador1, jogador2, tabuleiro, voltarJogada);
 
 	}
 
