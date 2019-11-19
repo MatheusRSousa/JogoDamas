@@ -21,6 +21,7 @@ public class Jogo {
 	private List<JogadasPossiveis> possiveisAtaques;
 	private List<JogadasPossiveis> possiveisComidas;
 	private VoltarJogada voltarJogada;
+	private int qntdJogadasEmpate;
 
 	public Jogo(Jogador jogador1, Jogador jogador2, Tabuleiro tabuleiro, VoltarJogada voltarJogada) {
 		this.jogador1 = jogador1;
@@ -273,8 +274,11 @@ public class Jogo {
 		int qntdDamasJogador1 = qtdDamaPorJogador(jogador1);
 		int qntdDamasJogador2 = qtdDamaPorJogador(jogador2);
 		if(totalPecas <= 4 && (qntdDamasJogador1 == 1 || qntdDamasJogador1 == 2) && (qntdDamasJogador2 == 1 || qntdDamasJogador2 == 2)) {
-			
-		}
+			if(qntdJogadasEmpate == 5) {
+				return true;
+			}
+			qntdJogadasEmpate++;
+		} 
 		
 		return false;
 	}
@@ -294,6 +298,23 @@ public class Jogo {
 		}
 		return qtdPeca;
 	}
+	public Jogador ganhador() {
+
+		Jogador ganhador = null;
+
+		
+		int pecaJo1 = this.qtdPecaPorJogador(jogador1);
+		int pecaJo2 = this.qtdPecaPorJogador(jogador2);
+
+		if (pecaJo1 == 0 ) {
+			ganhador = jogador2;
+		} else if(pecaJo2 == 0) {
+			ganhador = jogador1;
+		}
+
+		return ganhador;
+	}
+	
 	
 	public int qtdDamaPorJogador(Jogador jogador) {
 		Peca[][] tabu = tabuleiro.getTabuleiro();
