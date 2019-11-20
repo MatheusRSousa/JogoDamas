@@ -29,7 +29,26 @@ public class Jogo {
 		this.voltarJogada = voltarJogada;
 	}
 
-	
+	public Jogador getJogador1() {
+		return jogador1;
+	}
+
+
+	public void setJogador1(Jogador jogador1) {
+		this.jogador1 = jogador1;
+	}
+
+
+	public Jogador getJogador2() {
+		return jogador2;
+	}
+
+
+	public void setJogador2(Jogador jogador2) {
+		this.jogador2 = jogador2;
+	}
+
+
 	public List<JogadasPossiveis> getJogadasPossiveis() {
 		return jogadasPossiveis;
 	}
@@ -135,7 +154,7 @@ public class Jogo {
 		}
 	}
 
-	// Escolher peça
+	// Escolher peï¿½a
 	public Peca escolherPeca(int linha, String letra) {
 		letra = letra.toLowerCase();
 		char letra1 = letra.charAt(0);
@@ -156,7 +175,7 @@ public class Jogo {
 			}
 		}
 		System.out.println();
-		System.out.println("Peça inválida, escolha outra peça");
+		System.out.println("Peï¿½a invï¿½lida, escolha outra peï¿½a");
 		System.out.println();
 		return null;
 	}
@@ -279,7 +298,7 @@ public class Jogo {
 		return false;
 	}
 	
-	// Retorna a quantidade de perça que o jogador ainda tem no tabuleiro
+	// Retorna a quantidade de perï¿½a que o jogador ainda tem no tabuleiro
 	private int qtdPecaPorJogador(Jogador jogador) {
 		Peca[][] tabu = tabuleiro.getTabuleiro();
 		int qtdPeca = 0;
@@ -302,8 +321,10 @@ public class Jogo {
 
 		for (int coluna = 0; coluna < tabu.length; coluna++) {
 			for (int linha = 0; linha < tabu.length; linha++) {
-				if (tabu[coluna][linha].getCor() == jogador.getPeca().getCor() && tabu[coluna][linha].isDama()) {
-					qtdPeca += 1;
+				if(tabu[coluna][linha] != null) {
+					if (tabu[coluna][linha].getCor() == jogador.getPeca().getCor() && tabu[coluna][linha].isDama()) {
+						qtdPeca += 1;
+					}
 				}
 			}
 		}
