@@ -5,9 +5,8 @@ import br.com.unifacisa.si2.damas.strategy.CriarTabuleiro;
 public class Tabuleiro {
 
 	
-		Peca[][] tabuleiro;
+	Peca[][] tabuleiro;
 	
-	//usar o singleton (tabuleiro unico)
 	public Tabuleiro(CriarTabuleiro tabuleiro,Jogador jogador1, Jogador jogador2) {
 		this.tabuleiro = tabuleiro.criarTabuleiro(jogador1, jogador2);
 		

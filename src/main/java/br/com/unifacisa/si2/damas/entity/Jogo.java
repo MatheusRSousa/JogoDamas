@@ -3,12 +3,11 @@ package br.com.unifacisa.si2.damas.entity;
 import java.util.Arrays;
 import java.util.List;
 
-
 import br.com.unifacisa.si2.damas.memento.VoltarJogada;
 
 public class Jogo {
-	
-	private static final int VALOR_ASCII_CONVERSAO = 97; 
+
+	private static final int VALOR_ASCII_CONVERSAO = 97;
 
 	private Jogador jogador1;
 	private Jogador jogador2;
@@ -34,31 +33,25 @@ public class Jogo {
 		return jogador1;
 	}
 
-
 	public void setJogador1(Jogador jogador1) {
 		this.jogador1 = jogador1;
 	}
-
 
 	public Jogador getJogador2() {
 		return jogador2;
 	}
 
-
 	public void setJogador2(Jogador jogador2) {
 		this.jogador2 = jogador2;
 	}
-
 
 	public List<JogadasPossiveis> getJogadasPossiveis() {
 		return jogadasPossiveis;
 	}
 
-	
 	public void setTabuleiro(Tabuleiro tabuleiro) {
 		this.tabuleiro = tabuleiro;
 	}
-
 
 	public Tabuleiro getTabuleiro() {
 		return tabuleiro;
@@ -67,7 +60,6 @@ public class Jogo {
 	public void setJogadasPossiveis(List<JogadasPossiveis> jogadasPossiveis) {
 		this.jogadasPossiveis = jogadasPossiveis;
 	}
-
 
 	public List<JogadasPossiveis> getPossiveisAtaques() {
 		return possiveisAtaques;
@@ -92,9 +84,11 @@ public class Jogo {
 	public void setJogadaYanterior(int jogadaYanterior) {
 		this.colunaAnterior = jogadaYanterior;
 	}
+
 	public int getQntdJogadas() {
 		return qntdJogadas;
 	}
+
 	public void diminuiJogada() {
 		qntdJogadas--;
 	}
@@ -103,33 +97,34 @@ public class Jogo {
 		return vencedor;
 	}
 
-
 	public void moverPeca(Peca peca, int linhaSaida, String letra) {
 		letra = letra.toLowerCase();
 		char letra1 = letra.charAt(0);
 		int colunaSaida = letra1 - VALOR_ASCII_CONVERSAO;
 		boolean jogadaPossivel = false;
-		int aux  = 0;
+		int aux = 0;
 		boolean comeu = false;
 		for (JogadasPossiveis jogadasPossiveis : jogadasPossiveis) {
-			if(jogadasPossiveis.getLinha() == linhaSaida && jogadasPossiveis.getColuna() == colunaSaida) {
+			if (jogadasPossiveis.getLinha() == linhaSaida && jogadasPossiveis.getColuna() == colunaSaida) {
 				jogadaPossivel = true;
 			}
 		}
 		for (JogadasPossiveis possiveisAtaques : possiveisAtaques) {
-			if(possiveisAtaques.getColuna() == colunaSaida && possiveisAtaques.getLinha() == linhaSaida) {
+			if (possiveisAtaques.getColuna() == colunaSaida && possiveisAtaques.getLinha() == linhaSaida) {
 				voltarJogada.AddComidas(possiveisComidas.get(aux).getLinha(), possiveisComidas.get(aux).getColuna());
 				comeu = true;
 				jogadaPossivel = true;
-				
-				for (int i = 0 ; i < possiveisComidas.size(); ) {
-					if(linhaSaida > possiveisComidas.get(i).getLinha()) {
-						tabuleiro.getTabuleiro()[possiveisComidas.get(i+1).getColuna()][possiveisComidas.get(i+1).getLinha()] = null;
-						getDaVez().setPontuacao(getDaVez().getPontuacao()+1);
+
+				for (int i = 0; i < possiveisComidas.size();) {
+					if (linhaSaida > possiveisComidas.get(i).getLinha()) {
+						tabuleiro.getTabuleiro()[possiveisComidas.get(i).getColuna()][possiveisComidas.get(i)
+								.getLinha()] = null;
+						getDaVez().setPontuacao(getDaVez().getPontuacao() + 1);
 						break;
-					}else {
-						tabuleiro.getTabuleiro()[possiveisComidas.get(i).getColuna()][possiveisComidas.get(i).getLinha()] = null;
-						getDaVez().setPontuacao(getDaVez().getPontuacao()+1);
+					} else {
+						tabuleiro.getTabuleiro()[possiveisComidas.get(i).getColuna()][possiveisComidas.get(i)
+								.getLinha()] = null;
+						getDaVez().setPontuacao(getDaVez().getPontuacao() + 1);
 						break;
 					}
 				}
@@ -137,16 +132,16 @@ public class Jogo {
 			aux++;
 		}
 		if (jogadaPossivel) {
-			if(!comeu) {
-				voltarJogada.AddComidas(-1,-1);
+			if (!comeu) {
+				voltarJogada.AddComidas(-1, -1);
 			}
 			voltarJogada.AddJogadaAnterior(colunaAnterior, linhaAnterior);
 			voltarJogada.AddJogadaAtual(linhaSaida, colunaSaida);
 			System.out.println("Jogada valida");
 			tabuleiro.getTabuleiro()[colunaAnterior][linhaAnterior] = null;
-			tabuleiro.getTabuleiro()[colunaSaida][linhaSaida] = peca;		
-			if((colunaSaida == tabuleiro.getTabuleiro().length-1 && getDaVez().getPeca().getLadoTabuleiro() == 0)||
-					(colunaSaida == 0 && getDaVez().getPeca().getLadoTabuleiro() == 1))  {
+			tabuleiro.getTabuleiro()[colunaSaida][linhaSaida] = peca;
+			if ((colunaSaida == tabuleiro.getTabuleiro().length - 1 && getDaVez().getPeca().getLadoTabuleiro() == 0)
+					|| (colunaSaida == 0 && getDaVez().getPeca().getLadoTabuleiro() == 1)) {
 				tabuleiro.getTabuleiro()[colunaSaida][linhaSaida].setDama(true);
 			}
 			qntdJogadas++;
@@ -207,18 +202,17 @@ public class Jogo {
 		possiveisComidas = jogadas.getPossiveisComidas();
 	}
 
-
 	// imprimir tabuleiro
 	public void imprimirTabuleiro() {
-		int tamanhoPrintSigla = tabuleiro.getTabuleiro().length*8-5;
-	    char sigla = '-';
-	    char sigla2 = '_';
-	    char[] arrayDeSiglas = new char[tamanhoPrintSigla];
-	    char[] arrayDeSiglas2 = new char[tamanhoPrintSigla];
-	    Arrays.fill(arrayDeSiglas, sigla);
-	    Arrays.fill(arrayDeSiglas2, sigla2);
-	    String stringComAsSiglas = new String(arrayDeSiglas);
-	    String stringComAsSiglas2 = new String(arrayDeSiglas2);
+		int tamanhoPrintSigla = tabuleiro.getTabuleiro().length * 8 - 5;
+		char sigla = '-';
+		char sigla2 = '_';
+		char[] arrayDeSiglas = new char[tamanhoPrintSigla];
+		char[] arrayDeSiglas2 = new char[tamanhoPrintSigla];
+		Arrays.fill(arrayDeSiglas, sigla);
+		Arrays.fill(arrayDeSiglas2, sigla2);
+		String stringComAsSiglas = new String(arrayDeSiglas);
+		String stringComAsSiglas2 = new String(arrayDeSiglas2);
 		System.out.println();
 		System.out.println("Lado do jogador: " + jogador1.getNome() + ", pontos: " + jogador1.getPontuacao());
 		System.out.print("     ");
@@ -231,84 +225,82 @@ public class Jogo {
 			int num = coluna + VALOR_ASCII_CONVERSAO;
 			char letra = (char) num;
 			String.valueOf(letra);
-			System.out.print(letra  + "|");
+			System.out.print(letra + "|");
 			for (int linha = 0; linha < tabuleiro.getTabuleiro().length; linha++) {
 				System.out.print("|");
 				if (tabuleiro.getTabuleiro()[coluna][linha] == null) {
 					System.out.print("      ");
 				} else {
-					if(linha == 0) {
+					if (linha == 0) {
 						System.out.print("");
 					}
 					System.out.print(tabuleiro.getTabuleiro()[coluna][linha].getCor());
 				}
 			}
 			System.out.println("|");
-		    System.out.println(stringComAsSiglas);
+			System.out.println(stringComAsSiglas);
 		}
 
-		System.out.println("Lado do jogador: " + jogador2.getNome() + ", pontos: " +jogador2.getPontuacao());
+		System.out.println("Lado do jogador: " + jogador2.getNome() + ", pontos: " + jogador2.getPontuacao());
 	}
 
-	
 	public void voltarJogada() {
 		if (getQntdJogadas() == 0) {
 			System.out.println("Impossivel Voltar Jogada");
-			
+
 		} else {
 			VoltarJogada jogada = voltarJogada.getJogadaAtuais();
-			VoltarJogada volta = voltarJogada.getJogadaAnterior();		
+			VoltarJogada volta = voltarJogada.getJogadaAnterior();
 			VoltarJogada comidas = voltarJogada.getPecasComidas();
-			
+
 			if (comidas != null) {
-				getTabuleiro().getTabuleiro()[comidas.getLinha()][comidas.getColuna()] = getDaVez().getPeca();	
+				getTabuleiro().getTabuleiro()[comidas.getLinha()][comidas.getColuna()] = getDaVez().getPeca();
 			}
-			System.out.println(volta.getColuna() + " " +volta.getLinha());
+			System.out.println(volta.getColuna() + " " + volta.getLinha());
 
 			diminuiJogada();
 			getTabuleiro().getTabuleiro()[volta.getLinha()][volta.getColuna()] = getDaVez().getPeca();
-			getTabuleiro().getTabuleiro()[jogada.getLinha()][jogada.getColuna()] = null;	
+			getTabuleiro().getTabuleiro()[jogada.getLinha()][jogada.getColuna()] = null;
 		}
 	}
-	
-	//Verifica se o jogo acabou
+
+	// Verifica se o jogo acabou
 	public boolean acabouJogo() {
 		boolean acabou = false;
 		int pecaJo1 = this.qtdPecaPorJogador(jogador1);
-		int pecaJo2 = this.qtdPecaPorJogador(jogador2);	
-		if(pecaJo1 == 0) {
+		int pecaJo2 = this.qtdPecaPorJogador(jogador2);
+		if (pecaJo1 == 0) {
 			acabou = true;
 			vencedor = jogador2;
-		}
-		else if(pecaJo2 == 0) {
+		} else if (pecaJo2 == 0) {
 			acabou = true;
 			vencedor = jogador1;
 		}
 		return acabou;
 	}
-	
-	
+
 	public boolean empatou() {
 		int totalPecas = qtdPecaPorJogador(jogador1) + qtdPecaPorJogador(jogador2);
 		int qntdDamasJogador1 = qtdDamaPorJogador(jogador1);
 		int qntdDamasJogador2 = qtdDamaPorJogador(jogador2);
-		if(totalPecas <= 4 && (qntdDamasJogador1 == 1 || qntdDamasJogador1 == 2) && (qntdDamasJogador2 == 1 || qntdDamasJogador2 == 2)) {
-			if(qntdJogadasEmpate == 5) {
+		if (totalPecas <= 4 && (qntdDamasJogador1 == 1 || qntdDamasJogador1 == 2)
+				&& (qntdDamasJogador2 == 1 || qntdDamasJogador2 == 2)) {
+			if (qntdJogadasEmpate == 5) {
 				return true;
 			}
 			qntdJogadasEmpate++;
-		} 
-		
+		}
+
 		return false;
 	}
-	
+
 	// Retorna a quantidade de per�a que o jogador ainda tem no tabuleiro
 	private int qtdPecaPorJogador(Jogador jogador) {
 		Peca[][] tabu = tabuleiro.getTabuleiro();
 		int qtdPeca = 0;
 		for (int coluna = 0; coluna < tabu.length; coluna++) {
 			for (int linha = 0; linha < tabu.length; linha++) {
-				if(tabu[coluna][linha] != null) {
+				if (tabu[coluna][linha] != null) {
 					if (tabu[coluna][linha].getCor() == jogador.getPeca().getCor()) {
 						qtdPeca += 1;
 					}
@@ -317,24 +309,7 @@ public class Jogo {
 		}
 		return qtdPeca;
 	}
-	public Jogador ganhador() {
 
-		Jogador ganhador = null;
-
-		
-		int pecaJo1 = this.qtdPecaPorJogador(jogador1);
-		int pecaJo2 = this.qtdPecaPorJogador(jogador2);
-
-		if (pecaJo1 == 0 ) {
-			ganhador = jogador2;
-		} else if(pecaJo2 == 0) {
-			ganhador = jogador1;
-		}
-
-		return ganhador;
-	}
-	
-	
 	public int qtdDamaPorJogador(Jogador jogador) {
 		Peca[][] tabu = tabuleiro.getTabuleiro();
 
@@ -342,7 +317,7 @@ public class Jogo {
 
 		for (int coluna = 0; coluna < tabu.length; coluna++) {
 			for (int linha = 0; linha < tabu.length; linha++) {
-				if(tabu[coluna][linha] != null) {
+				if (tabu[coluna][linha] != null) {
 					if (tabu[coluna][linha].getCor() == jogador.getPeca().getCor() && tabu[coluna][linha].isDama()) {
 						qtdPeca += 1;
 					}

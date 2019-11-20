@@ -74,12 +74,14 @@ public class JogadasPossiveis {
 			baixo++;
 			direita++;
 			if (tabu[baixo][direita] == null) {
-				if(tabu[baixo-1][direita-1].getCor() != jogador.getPeca().getCor()) {
-					possiveisComidas.add(new JogadasPossiveis(direita-1, baixo-1));
-					possiveisAtaques.add(new JogadasPossiveis(direita, baixo));
-				}
-				else {
-					jogadasPossiveis.add(new JogadasPossiveis(direita, baixo));
+				if(tabu[baixo-1][direita-1] != null) {
+					if(tabu[baixo-1][direita-1].getCor() != jogador.getPeca().getCor()) {
+						possiveisComidas.add(new JogadasPossiveis(direita-1, baixo-1));
+						possiveisAtaques.add(new JogadasPossiveis(direita, baixo));
+					}
+					else {
+						jogadasPossiveis.add(new JogadasPossiveis(direita, baixo));
+					}
 				}
 			} else if (tabu[baixo][direita].getCor() == jogador.getPeca().getCor()) {
 				break;
@@ -91,12 +93,14 @@ public class JogadasPossiveis {
 			baixo++;
 			esquerda--;
 			if (tabu[baixo][esquerda] == null) {
-				if(tabu[baixo-1][esquerda+1].getCor() != jogador.getPeca().getCor()) {
-					possiveisComidas.add(new JogadasPossiveis(esquerda+1, baixo-1));
-					possiveisAtaques.add(new JogadasPossiveis(esquerda, baixo));
-				}
-				else {
-					jogadasPossiveis.add(new JogadasPossiveis(esquerda, baixo));
+				if(tabu[baixo-1][esquerda+1] != null) {
+					if(tabu[baixo-1][esquerda+1].getCor() != jogador.getPeca().getCor()) {
+						possiveisComidas.add(new JogadasPossiveis(esquerda+1, baixo-1));
+						possiveisAtaques.add(new JogadasPossiveis(esquerda, baixo));
+					}
+					else {
+						jogadasPossiveis.add(new JogadasPossiveis(esquerda, baixo));
+					}
 				}
 			} else if (tabu[baixo][esquerda].getCor() == jogador.getPeca().getCor()) {
 				break;
@@ -108,12 +112,14 @@ public class JogadasPossiveis {
 			cima--;
 			esquerda--;
 			if (tabu[cima][esquerda] == null) {
-				if(tabu[cima+1][esquerda+1].getCor() != jogador.getPeca().getCor()) {
-					possiveisComidas.add(new JogadasPossiveis(esquerda+1, cima-1));
-					possiveisAtaques.add(new JogadasPossiveis(esquerda, cima));
-				}
-				else {
-					jogadasPossiveis.add(new JogadasPossiveis(esquerda, cima));
+				if(tabu[cima+1][esquerda+1] != null) {
+					if(tabu[cima+1][esquerda+1].getCor() != jogador.getPeca().getCor()) {
+						possiveisComidas.add(new JogadasPossiveis(esquerda+1, cima-1));
+						possiveisAtaques.add(new JogadasPossiveis(esquerda, cima));
+					}
+					else {
+						jogadasPossiveis.add(new JogadasPossiveis(esquerda, cima));
+					}
 				}
 			} else if (tabu[cima][esquerda].getCor() == jogador.getPeca().getCor()) {
 				break;
@@ -125,12 +131,14 @@ public class JogadasPossiveis {
 			cima--;
 			direita++;
 			if (tabu[cima][direita] == null) {
-				if(tabu[cima+1][direita-1].getCor() != jogador.getPeca().getCor()) {
-					possiveisComidas.add(new JogadasPossiveis(direita-1, cima+1));
-					possiveisAtaques.add(new JogadasPossiveis(direita, cima));
-				}
-				else {
-					jogadasPossiveis.add(new JogadasPossiveis(direita, cima));
+				if(tabu[cima+1][direita-1] != null) {
+					if(tabu[cima+1][direita-1].getCor() != jogador.getPeca().getCor()) {
+						possiveisComidas.add(new JogadasPossiveis(direita-1, cima+1));
+						possiveisAtaques.add(new JogadasPossiveis(direita, cima));
+					}
+					else {
+						jogadasPossiveis.add(new JogadasPossiveis(direita, cima));
+					}
 				}
 			} else if (tabu[cima][direita].getCor() == jogador.getPeca().getCor()) {
 				break;
@@ -138,7 +146,7 @@ public class JogadasPossiveis {
 		}
 	}
 
-	// verifica se a jogada do jogador 2 é possivel
+	// verifica se a jogada do jogador 2 ï¿½ possivel
 	public void getJogadaPossivelJ2(int linha, int coluna, Jogador jogadorVez, Peca[][] tabu) {
 
 		if (linha >= 0 && linha < tabu.length && coluna >= 0 && coluna < tabu.length) {
@@ -171,7 +179,7 @@ public class JogadasPossiveis {
 		}
 	}
 
-	// verifica se a jogada da peça que o jogador 1 escolheu é possivel
+	// verifica se a jogada da peï¿½a que o jogador 1 escolheu ï¿½ possivel
 	public void getJogadaPossivelJ1(int linha, int coluna, Jogador jogadorVez, Peca[][] tabu) {
 		
 		if (linha >= 0 && linha < tabu.length && coluna >= 0 && coluna < tabu.length) {

@@ -50,7 +50,7 @@ public class JogoApp {
 			
 			
 			//iniciou o jogo
-			while(!jogo.acabouJogo()) {
+			while(!jogo.acabouJogo() || !jogo.empatou()) {
 				peca = null;
 				while (peca == null) {
 					System.out.println();
@@ -114,8 +114,11 @@ public class JogoApp {
 				jogo.moverPeca(peca, linha_saida, coluna_saida);
 			
 				}
-			
-			System.out.println("Vencedor do jogo é : " + jogo.getVencedor());
+			if(jogo.getVencedor() != null) {
+				System.out.println("Vencedor do jogo é : " + jogo.getVencedor());
+			}else {
+				System.out.println("Jogo empatou");
+			}
 			JogoDAOImpl banco = new JogoDAOImpl();
 			banco.insertConfronto(jogo.getJogador1(), jogo.getJogador2(), jogo.getVencedor());
 			System.out.println("Deseja jogar novamente?\n Para sim digite 1\n Para não digite 2");

@@ -14,11 +14,9 @@ public class JogoDAOImpl implements JogoDAO{
 		String URL = "jdbc:mysql://localhost/damas?useTimezone=true&serverTimezone=UTC";
 		String user = "root";
 		String pwd = "";
-		System.out.println("Conectando ao banco...");
+		System.out.println("Salvando confronto...");
 		try {
 			Connection conexao = DriverManager.getConnection(URL, user, pwd);
-			System.out.println("Conectado!");
-			
 			String sql = "insert into jogo " + "(confronto, Vencedor)" + " values (?,?)";
 			
 			PreparedStatement stmt = conexao.prepareStatement(sql);
@@ -26,9 +24,11 @@ public class JogoDAOImpl implements JogoDAO{
 			stmt.setString(1, jogador1.getNome() + " X "+ jogador2.getNome());
 			stmt.setString(2, vencedor == null ? " Empate " : vencedor.getNome());
 			
-			System.out.println("Salvando o confronto...");
+		
 			stmt.execute();
 			conexao.close();
+
+			System.out.println("Salvo com sucesso!");
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
